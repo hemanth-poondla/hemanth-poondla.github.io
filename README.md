@@ -1,34 +1,43 @@
-# 🌟 Hemanth Poondla — Portfolio Website
+# 🚀 Hemanth Poondla — Portfolio Website
 
-Welcome, hero. This is the source code for my personal portfolio, forged with pride and built to last.  
-Crafted using **modern tools**, **classic values**, and the belief that great products deserve great stories.
-
-## 🧩 Tech Stack
-
-This beast is powered by:
-
-- ⚡ **Vite** — lightning-fast dev experience  
-- ⚛️ **React** + **TypeScript** — because structure + speed matters  
-- 🎨 **Tailwind CSS** — clean styling without a fight  
-- 🎛️ **shadcn-ui** — beautiful components, no drama  
-
-Traditional craftsmanship meets future-proof tech.
+A clean and modern portfolio showcasing my work, product thinking, and engineering skills.  
+Focused on delivering real-world impact and elegant user experiences.
 
 ---
 
-## 🛠️ Want to Hack on It Locally?
+## 🌐 Live Preview
 
-Bring the code home, captain.
+🔗 https://hemanth-poondla.github.io  
+*(Deployed via GitHub Pages)*
+
+---
+
+## 🧩 Tech Stack
+
+This project is built using:
+
+- ⚛️ React + TypeScript
+- ⚡ Vite
+- 🎨 Tailwind CSS
+- 🧩 shadcn/ui component system
+
+Fast. Scalable. Future-friendly.
+
+---
+
+## 🛠️ Run Locally
+
+Clone the project and fire it up on your machine:
 
 ```sh
-# Step 1: Grab the code
-git clone <YOUR_GIT_URL>
+# Clone the repository
+git clone https://github.com/hemanth-poondla/hemanth-poondla.github.io.git
 
-# Step 2: Enter the arena
-cd <YOUR_PROJECT_NAME>
+# Go into the project folder
+cd hemanth-poondla.github.io
 
-# Step 3: Install dependencies
+# Install dependencies
 npm install
 
-# Step 4: Let the server roar
+# Start development server
 npm run dev
