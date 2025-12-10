@@ -20,7 +20,7 @@ const projects = [
     description: "Intelligent styling app that helps organize your wardrobe and provides AI-powered outfit recommendations based on weather and occasion.",
     tech: ["React", "TypeScript", "Tailwind", "Supabase", "AI/ML"],
     image: "https://images.unsplash.com/photo-1558171813-4c088753af8f?w=800&q=80",
-    liveUrl: "https://fit-oracle-70.lovable.app/",
+    liveUrl: "https://outfit-oracle-70.lovable.app/",
   },
 ];
 
