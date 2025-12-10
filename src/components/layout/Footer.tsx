@@ -1,11 +1,10 @@
 import { Link } from "react-router-dom";
-import { Github, Linkedin, Twitter, Mail } from "lucide-react";
+import { Github, Linkedin, Mail } from "lucide-react";
 
 const socialLinks = [
-  { icon: Github, href: "https://github.com", label: "GitHub" },
-  { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-  { icon: Twitter, href: "https://twitter.com", label: "Twitter" },
-  { icon: Mail, href: "mailto:hello@example.com", label: "Email" },
+  { icon: Github, href: "https://github.com/hemanth-poondla", label: "GitHub" },
+  { icon: Linkedin, href: "https://linkedin.com/in/hemanth-poondla", label: "LinkedIn" },
+  { icon: Mail, href: "mailto:poondlahemanth1@gmail.com", label: "Email" },
 ];
 
 export function Footer() {
@@ -14,9 +13,9 @@ export function Footer() {
       <div className="container mx-auto px-6 py-12">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex flex-col items-center md:items-start gap-1">
-            <Link to="/" className="text-lg font-semibold">Portfolio</Link>
+            <Link to="/" className="text-lg font-serif">Hemanth Poondla</Link>
             <p className="text-sm text-muted-foreground">
-              Frontend Developer
+              Senior Product Engineer
             </p>
           </div>
 

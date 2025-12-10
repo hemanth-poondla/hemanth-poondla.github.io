@@ -1,62 +1,40 @@
 import { motion } from "framer-motion";
-import { ArrowUpRight, Github, ExternalLink } from "lucide-react";
-import { Link } from "react-router-dom";
+import { ExternalLink } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
+import { Button } from "@/components/ui/button";
 
 const projects = [
   {
     id: "trip-captain",
     title: "Trip Captain",
-    description: "AI-powered travel planning platform",
-    tech: ["React", "TypeScript", "Tailwind", "Supabase"],
+    subtitle: "AI-Powered Travel Planning",
+    description: "Trip Captain is an intelligent travel planning platform that leverages AI to create personalized itineraries. Users can input their preferences, budget, and travel dates to receive comprehensive trip plans including accommodations, activities, and local recommendations. The platform features real-time collaboration, smart suggestions based on weather and local events, and seamless booking integration.",
+    features: [
+      "AI-powered itinerary generation",
+      "Real-time collaboration for group trips",
+      "Smart budget optimization",
+      "Local recommendations and hidden gems",
+      "Weather-aware planning",
+    ],
+    tech: ["React", "TypeScript", "Tailwind CSS", "Supabase", "OpenAI API", "Framer Motion"],
     image: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800&q=80",
-    liveUrl: "https://tripcaptain.co.in",
-    githubUrl: "#",
+    liveUrl: "https://www.tripcaptain.co.in/",
   },
   {
     id: "style-sync",
     title: "Style Sync",
-    description: "Smart wardrobe management application",
-    tech: ["React", "Node.js", "MongoDB", "Framer Motion"],
+    subtitle: "Smart Wardrobe Management",
+    description: "Style Sync revolutionizes how you manage your wardrobe. This intelligent styling application helps users organize their clothing, get AI-powered outfit recommendations based on weather, occasion, and personal style preferences. The app learns from your choices to provide increasingly personalized suggestions, making getting dressed effortless and stylish.",
+    features: [
+      "Digital wardrobe organization",
+      "AI-powered outfit recommendations",
+      "Weather-based styling suggestions",
+      "Occasion-specific outfit planning",
+      "Style analytics and insights",
+    ],
+    tech: ["React", "TypeScript", "Tailwind CSS", "Supabase", "AI/ML Integration", "Framer Motion"],
     image: "https://images.unsplash.com/photo-1558171813-4c088753af8f?w=800&q=80",
-    liveUrl: "#",
-    githubUrl: "#",
-  },
-  {
-    id: "dashboard-pro",
-    title: "Dashboard Pro",
-    description: "Enterprise analytics dashboard",
-    tech: ["Next.js", "D3.js", "PostgreSQL", "GraphQL"],
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80",
-    liveUrl: "#",
-    githubUrl: "#",
-  },
-  {
-    id: "design-system",
-    title: "Design System",
-    description: "Component library with theming",
-    tech: ["React", "Storybook", "TypeScript"],
-    image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&q=80",
-    liveUrl: "#",
-    githubUrl: "#",
-  },
-  {
-    id: "task-flow",
-    title: "Task Flow",
-    description: "Project management with Kanban",
-    tech: ["React", "DnD Kit", "Zustand"],
-    image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=800&q=80",
-    liveUrl: "#",
-    githubUrl: "#",
-  },
-  {
-    id: "ecommerce-ui",
-    title: "E-Commerce UI",
-    description: "Modern storefront design",
-    tech: ["Next.js", "Stripe", "Tailwind"],
-    image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80",
-    liveUrl: "#",
-    githubUrl: "#",
+    liveUrl: "https://fit-oracle-70.lovable.app/",
   },
 ];
 
@@ -68,76 +46,88 @@ const Projects = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="max-w-xl mb-16"
+            className="text-center max-w-2xl mx-auto mb-20"
           >
-            <p className="text-muted-foreground text-sm mb-2">Work</p>
-            <h1 className="text-4xl font-semibold tracking-tight mb-4">
+            <p className="font-mono text-sm text-muted-foreground mb-4">SELECTED WORK</p>
+            <h1 className="text-4xl md:text-5xl font-serif tracking-tight mb-6">
               Projects
             </h1>
-            <p className="text-muted-foreground">
-              A selection of projects I've worked on.
+            <p className="text-lg text-muted-foreground">
+              Personal projects I've built to explore new technologies and solve real-world problems. 
+              Each project represents my passion for creating meaningful digital experiences.
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="space-y-24">
             {projects.map((project, index) => (
               <motion.article
                 key={project.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="group"
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+                className="grid lg:grid-cols-2 gap-12 items-center"
               >
-                <Link
-                  to={`/projects/${project.id}`}
-                  className="block border border-border rounded-2xl overflow-hidden hover:border-foreground/20 transition-colors"
-                >
-                  <div className="relative h-48 bg-secondary">
+                <div className={index % 2 === 1 ? "lg:order-2" : ""}>
+                  <div className="relative rounded-2xl overflow-hidden border border-border">
                     <img
                       src={project.image}
                       alt={project.title}
-                      className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
+                      className="w-full aspect-video object-cover"
                     />
-                    <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="p-2 bg-background/90 rounded-full hover:bg-background transition-colors"
-                      >
-                        <ExternalLink className="w-4 h-4" />
-                      </a>
-                      <a
-                        href={project.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="p-2 bg-background/90 rounded-full hover:bg-background transition-colors"
-                      >
-                        <Github className="w-4 h-4" />
-                      </a>
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end p-6">
+                      <Button asChild className="rounded-full">
+                        <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
+                          <ExternalLink className="mr-2 h-4 w-4" />
+                          Visit Live Site
+                        </a>
+                      </Button>
                     </div>
                   </div>
-                  <div className="p-6">
-                    <h2 className="text-lg font-semibold mb-1 group-hover:underline underline-offset-4">
-                      {project.title}
-                    </h2>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      {project.description}
-                    </p>
+                </div>
+
+                <div className={index % 2 === 1 ? "lg:order-1" : ""}>
+                  <p className="font-mono text-xs text-muted-foreground mb-2">
+                    {project.subtitle}
+                  </p>
+                  <h2 className="text-3xl font-serif mb-4">{project.title}</h2>
+                  <p className="text-muted-foreground mb-6 leading-relaxed">
+                    {project.description}
+                  </p>
+
+                  <div className="mb-6">
+                    <h3 className="text-sm font-semibold mb-3">Key Features</h3>
+                    <ul className="space-y-2">
+                      {project.features.map((feature) => (
+                        <li key={feature} className="flex items-start gap-2 text-sm text-muted-foreground">
+                          <span className="text-foreground mt-1">•</span>
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="mb-8">
+                    <h3 className="text-sm font-semibold mb-3">Tech Stack</h3>
                     <div className="flex flex-wrap gap-2">
                       {project.tech.map((tech) => (
                         <span
                           key={tech}
-                          className="px-2 py-1 text-xs bg-secondary rounded"
+                          className="px-3 py-1 text-xs font-mono bg-secondary rounded-full"
                         >
                           {tech}
                         </span>
                       ))}
                     </div>
                   </div>
-                </Link>
+
+                  <Button asChild variant="outline" className="rounded-full">
+                    <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
+                      <ExternalLink className="mr-2 h-4 w-4" />
+                      View Project
+                    </a>
+                  </Button>
+                </div>
               </motion.article>
             ))}
           </div>

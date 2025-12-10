@@ -36,8 +36,8 @@ export function Header() {
       )}
     >
       <div className="container mx-auto px-6 h-16 flex items-center justify-between">
-        <Link to="/" className="text-lg font-semibold tracking-tight">
-          Portfolio
+        <Link to="/" className="text-lg font-serif tracking-tight">
+          Hemanth Poondla
         </Link>
 
         <nav className="hidden md:flex items-center gap-8">

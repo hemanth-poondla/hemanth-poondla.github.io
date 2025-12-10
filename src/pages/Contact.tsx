@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Mail, MapPin, Send, Github, Linkedin, Twitter } from "lucide-react";
+import { Mail, MapPin, Send, Github, Linkedin } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,9 +8,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 
 const socialLinks = [
-  { icon: Github, href: "https://github.com", label: "GitHub" },
-  { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-  { icon: Twitter, href: "https://twitter.com", label: "Twitter" },
+  { icon: Github, href: "https://github.com/hemanth-poondla", label: "GitHub" },
+  { icon: Linkedin, href: "https://linkedin.com/in/hemanth-poondla", label: "LinkedIn" },
 ];
 
 const Contact = () => {
@@ -113,16 +112,26 @@ const Contact = () => {
               <div>
                 <h2 className="text-sm font-medium text-muted-foreground mb-4">Email</h2>
                 <a
-                  href="mailto:hello@example.com"
+                  href="mailto:poondlahemanth1@gmail.com"
                   className="text-foreground hover:underline underline-offset-4"
                 >
-                  hello@example.com
+                  poondlahemanth1@gmail.com
                 </a>
               </div>
 
               <div>
                 <h2 className="text-sm font-medium text-muted-foreground mb-4">Location</h2>
-                <p className="text-foreground">India</p>
+                <p className="text-foreground">Hyderabad, India</p>
+              </div>
+
+              <div>
+                <h2 className="text-sm font-medium text-muted-foreground mb-4">Phone</h2>
+                <a
+                  href="tel:+919885747107"
+                  className="text-foreground hover:underline underline-offset-4"
+                >
+                  +91 9885747107
+                </a>
               </div>
 
               <div>

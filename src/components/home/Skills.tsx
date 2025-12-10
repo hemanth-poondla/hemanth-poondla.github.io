@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
 
 const skills = [
-  { category: "Frontend", items: ["React", "TypeScript", "Next.js", "Tailwind CSS"] },
-  { category: "Backend", items: ["Node.js", "Express", "PostgreSQL", "MongoDB"] },
-  { category: "Tools", items: ["Git", "Figma", "Vercel", "Docker"] },
+  { category: "Frontend", items: ["React", "TypeScript", "JavaScript", "Tailwind CSS", "HTML/CSS"] },
+  { category: "Backend", items: ["Node.js", "Java", "Python", "DBMS", "REST APIs"] },
+  { category: "Domain", items: ["Banking Applications", "Trade Finance", "Supply Chain Finance", "Corporate Banking"] },
 ];
 
 export function Skills() {
