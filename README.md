@@ -3,17 +3,6 @@
 Welcome, hero. This is the source code for my personal portfolio, forged with pride and built to last.  
 Crafted using **modern tools**, **classic values**, and the belief that great products deserve great stories.
 
----
-
-## 🚀 Project Preview
-
-Live Site:  
-https://lovable.dev/projects/fb449284-0af0-4f12-b3b5-0fc14c8e7a34
-
-This is where I showcase what I build, what I break (intentionally), and what I make better.
-
----
-
 ## 🧩 Tech Stack
 
 This beast is powered by:
