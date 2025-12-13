@@ -35,7 +35,16 @@ Skills:
 Keep responses friendly, concise, and helpful. If asked something you don't know about Hemanth, politely say you don't have that information.`;
 
 export function ChatBot() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(() => {
+    // Only auto-open if user hasn't closed it before
+    const hasBeenClosed = localStorage.getItem('chatbot-closed');
+    return !hasBeenClosed;
+  });
+
+  const handleClose = () => {
+    setIsOpen(false);
+    localStorage.setItem('chatbot-closed', 'true');
+  };
   const [messages, setMessages] = useState<Message[]>([
     { role: "assistant", content: "Hi! I'm Hemanth's portfolio assistant. Ask me about his work, projects, travels, or skills! 👋" }
   ]);
@@ -106,7 +115,7 @@ export function ChatBot() {
         transition={{ delay: 1, type: "spring" }}
       >
         <Button
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={() => isOpen ? handleClose() : setIsOpen(true)}
           size="lg"
           className="h-14 w-14 rounded-full shadow-lg bg-primary hover:bg-primary/90"
         >
