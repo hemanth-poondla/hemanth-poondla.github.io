@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Github, Linkedin, Mail } from "lucide-react";
+import { Github, Linkedin, Mail, Heart } from "lucide-react";
 
 const socialLinks = [
   { icon: Github, href: "https://github.com/hemanth-poondla", label: "GitHub" },
@@ -26,7 +26,7 @@ export function Footer() {
                 href={social.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                className="text-muted-foreground hover:text-foreground transition-colors hover:scale-110 transform duration-200"
                 aria-label={social.label}
               >
                 <social.icon className="h-5 w-5" />
@@ -35,8 +35,14 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 pt-8 border-t border-border text-center text-sm text-muted-foreground">
-          © {new Date().getFullYear()} All rights reserved.
+        <div className="mt-8 pt-8 border-t border-border text-center">
+          <p className="text-sm text-muted-foreground flex items-center justify-center gap-1 flex-wrap">
+            Made with <Heart className="h-4 w-4 text-red-500 animate-pulse" /> by a proud Indian
+            <span className="ml-1">🇮🇳</span>
+          </p>
+          <p className="text-xs text-muted-foreground mt-2">
+            © {new Date().getFullYear()} All rights reserved.
+          </p>
         </div>
       </div>
     </footer>

@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Sparkles } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
+import { TypingText } from "@/components/TypingText";
 
 const projects = [
   {
@@ -48,9 +49,12 @@ const Projects = () => {
             animate={{ opacity: 1, y: 0 }}
             className="text-center max-w-2xl mx-auto mb-20"
           >
-            <p className="font-mono text-sm text-muted-foreground mb-4">SELECTED WORK</p>
+            <p className="font-mono text-sm text-muted-foreground mb-4 flex items-center justify-center gap-2">
+              <Sparkles className="h-4 w-4" />
+              SELECTED WORK
+            </p>
             <h1 className="text-4xl md:text-5xl font-serif tracking-tight mb-6">
-              Projects
+              <TypingText text="Projects" speed={100} pauseTime={3000} />
             </h1>
             <p className="text-lg text-muted-foreground">
               Personal projects I've built to explore new technologies and solve real-world problems. 
@@ -68,14 +72,18 @@ const Projects = () => {
                 transition={{ duration: 0.5 }}
                 className="grid lg:grid-cols-2 gap-12 items-center"
               >
-                <div className={index % 2 === 1 ? "lg:order-2" : ""}>
-                  <div className="relative rounded-2xl overflow-hidden border border-border">
+                <motion.div 
+                  className={index % 2 === 1 ? "lg:order-2" : ""}
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <div className="relative rounded-2xl overflow-hidden border border-border group">
                     <img
                       src={project.image}
                       alt={project.title}
-                      className="w-full aspect-video object-cover"
+                      className="w-full aspect-video object-cover transition-transform duration-500 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end p-6">
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
                       <Button asChild className="rounded-full">
                         <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
                           <ExternalLink className="mr-2 h-4 w-4" />
@@ -84,7 +92,7 @@ const Projects = () => {
                       </Button>
                     </div>
                   </div>
-                </div>
+                </motion.div>
 
                 <div className={index % 2 === 1 ? "lg:order-1" : ""}>
                   <p className="font-mono text-xs text-muted-foreground mb-2">
@@ -98,11 +106,18 @@ const Projects = () => {
                   <div className="mb-6">
                     <h3 className="text-sm font-semibold mb-3">Key Features</h3>
                     <ul className="space-y-2">
-                      {project.features.map((feature) => (
-                        <li key={feature} className="flex items-start gap-2 text-sm text-muted-foreground">
-                          <span className="text-foreground mt-1">•</span>
+                      {project.features.map((feature, i) => (
+                        <motion.li 
+                          key={feature} 
+                          className="flex items-start gap-2 text-sm text-muted-foreground"
+                          initial={{ opacity: 0, x: -10 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: i * 0.1 }}
+                        >
+                          <span className="text-primary mt-1">✦</span>
                           {feature}
-                        </li>
+                        </motion.li>
                       ))}
                     </ul>
                   </div>
@@ -110,20 +125,25 @@ const Projects = () => {
                   <div className="mb-8">
                     <h3 className="text-sm font-semibold mb-3">Tech Stack</h3>
                     <div className="flex flex-wrap gap-2">
-                      {project.tech.map((tech) => (
-                        <span
+                      {project.tech.map((tech, i) => (
+                        <motion.span
                           key={tech}
-                          className="px-3 py-1 text-xs font-mono bg-secondary rounded-full"
+                          className="px-3 py-1 text-xs font-mono bg-secondary rounded-full hover:bg-primary/10 transition-colors"
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          whileInView={{ opacity: 1, scale: 1 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: i * 0.05 }}
+                          whileHover={{ scale: 1.05 }}
                         >
                           {tech}
-                        </span>
+                        </motion.span>
                       ))}
                     </div>
                   </div>
 
-                  <Button asChild variant="outline" className="rounded-full">
+                  <Button asChild variant="outline" className="rounded-full group">
                     <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="mr-2 h-4 w-4" />
+                      <ExternalLink className="mr-2 h-4 w-4 group-hover:rotate-12 transition-transform" />
                       View Project
                     </a>
                   </Button>
@@ -131,6 +151,26 @@ const Projects = () => {
               </motion.article>
             ))}
           </div>
+
+          {/* More projects coming soon */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mt-24 py-16 border border-dashed border-border rounded-2xl"
+          >
+            <motion.span 
+              className="text-4xl mb-4 block"
+              animate={{ rotate: [0, 10, -10, 0] }}
+              transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 }}
+            >
+              🚀
+            </motion.span>
+            <p className="text-lg font-semibold mb-2">More projects coming soon!</p>
+            <p className="text-muted-foreground">
+              Currently cooking up something exciting. Stay tuned!
+            </p>
+          </motion.div>
         </div>
       </section>
     </Layout>

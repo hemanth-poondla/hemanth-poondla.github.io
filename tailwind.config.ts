@@ -14,9 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ["Inter", "-apple-system", "BlinkMacSystemFont", "system-ui", "sans-serif"],
-        serif: ["Instrument Serif", "Georgia", "serif"],
-        mono: ["JetBrains Mono", "monospace"],
+        sans: ["DM Sans", "sans-serif"],
+        heading: ["Sora", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
