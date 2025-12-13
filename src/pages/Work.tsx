@@ -202,16 +202,16 @@ const Work = () => {
             <h2 className="text-2xl font-serif mb-8">Education</h2>
             <div className="p-6 border border-border rounded-2xl">
               <p className="font-mono text-sm text-muted-foreground mb-2">
-                <EditableText id="edu_year" defaultValue="2015 - 2019" className="font-mono text-sm text-muted-foreground" />
+                <EditableText id="edu_year" defaultValue="2016 - 2020" className="font-mono text-sm text-muted-foreground" />
               </p>
               <h3 className="text-lg font-semibold mb-1">
                 <EditableText id="edu_degree" defaultValue="B.Tech in Computer Science & Engineering" className="text-lg font-semibold" />
               </h3>
               <p className="text-muted-foreground">
-                <EditableText id="edu_college" defaultValue="KL University, Vijayawada" className="text-muted-foreground" />
+                <EditableText id="edu_college" defaultValue="Keshav Memorial Institute of Technology, Hyderabad" className="text-muted-foreground" />
               </p>
               <p className="text-sm text-primary mt-2">
-                <EditableText id="edu_cgpa" defaultValue="CGPA: 9.32" className="text-sm text-primary" />
+                <EditableText id="edu_cgpa" defaultValue="CGPA: 7.8" className="text-sm text-primary" />
               </p>
             </div>
           </motion.div>
