@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowUpRight, ExternalLink, Plane, Shirt } from "lucide-react";
+import { ArrowUpRight, ExternalLink, Plane, Shirt, Wallet } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
@@ -11,16 +11,25 @@ const projects = [
     description: "An intelligent travel planning platform that leverages AI to create personalized itineraries with real-time collaboration and smart recommendations.",
     tech: ["React", "TypeScript", "Tailwind", "Supabase", "OpenAI"],
     icon: Plane,
-    liveUrl: "https://www.tripcaptain.co.in/",
+    liveUrl: "https://tripcaptain.werde.app/",
   },
   {
-    id: "style-sync",
-    title: "Style Sync",
+    id: "wardrobe-by-werde",
+    title: "Wardrobe by werde",
     subtitle: "Smart Wardrobe Management",
     description: "Intelligent styling app that helps organize your wardrobe and provides AI-powered outfit recommendations based on weather and occasion.",
     tech: ["React", "TypeScript", "Tailwind", "Supabase", "AI/ML"],
     icon: Shirt,
-    liveUrl: "https://outfit-oracle-70.lovable.app/",
+    liveUrl: "https://wardrobe.werde.app/",
+  },
+  {
+    id: "settle-by-werde",
+    title: "Settle by werde",
+    subtitle: "Expense Splitting Made Easy",
+    description: "A smart expense splitting app that helps you track shared expenses with friends, split bills effortlessly, and settle up with ease.",
+    tech: ["React", "TypeScript", "Tailwind", "Supabase"],
+    icon: Wallet,
+    liveUrl: "https://settle.werde.app/",
   },
 ];
 
