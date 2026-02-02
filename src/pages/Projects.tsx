@@ -19,13 +19,13 @@ const projects = [
     ],
     tech: ["React", "TypeScript", "Tailwind CSS", "Supabase", "OpenAI API", "Framer Motion"],
     image: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800&q=80",
-    liveUrl: "https://www.tripcaptain.co.in/",
+    liveUrl: "https://tripcaptain.werde.app/",
   },
   {
-    id: "style-sync",
-    title: "Style Sync",
+    id: "wardrobe-by-werde",
+    title: "Wardrobe by werde",
     subtitle: "Smart Wardrobe Management",
-    description: "Style Sync revolutionizes how you manage your wardrobe. This intelligent styling application helps users organize their clothing, get AI-powered outfit recommendations based on weather, occasion, and personal style preferences. The app learns from your choices to provide increasingly personalized suggestions, making getting dressed effortless and stylish.",
+    description: "Wardrobe by werde revolutionizes how you manage your wardrobe. This intelligent styling application helps users organize their clothing, get AI-powered outfit recommendations based on weather, occasion, and personal style preferences. The app learns from your choices to provide increasingly personalized suggestions, making getting dressed effortless and stylish.",
     features: [
       "Digital wardrobe organization",
       "AI-powered outfit recommendations",
@@ -35,7 +35,23 @@ const projects = [
     ],
     tech: ["React", "TypeScript", "Tailwind CSS", "Supabase", "AI/ML Integration", "Framer Motion"],
     image: "https://images.unsplash.com/photo-1558171813-4c088753af8f?w=800&q=80",
-    liveUrl: "https://fit-oracle-70.lovable.app/",
+    liveUrl: "https://wardrobe.werde.app/",
+  },
+  {
+    id: "settle-by-werde",
+    title: "Settle by werde",
+    subtitle: "Expense Splitting Made Easy",
+    description: "Settle by werde is a smart expense splitting app that simplifies shared finances. Whether you're splitting dinner with friends, sharing rent with roommates, or managing group travel expenses, Settle makes it effortless to track who owes what and settle up with ease. The app features intuitive expense tracking, automatic balance calculations, and seamless settlement options.",
+    features: [
+      "Easy expense tracking and splitting",
+      "Automatic balance calculations",
+      "Group expense management",
+      "Settlement history and reminders",
+      "Multi-currency support",
+    ],
+    tech: ["React", "TypeScript", "Tailwind CSS", "Supabase", "Framer Motion"],
+    image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=80",
+    liveUrl: "https://settle.werde.app/",
   },
 ];
 
