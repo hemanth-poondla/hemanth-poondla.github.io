@@ -68,11 +68,11 @@ const Index = () => {
           </div>
 
           <h1 style={{ fontFamily: sora, fontSize: 58, fontWeight: 700, letterSpacing: "-0.035em", lineHeight: 1.06, margin: "0 0 20px", ...gradTitle }}>
-            I turn AI ideas into<br />products people rely on.
+            From banking systems<br />to AI systems.
           </h1>
 
           <p style={{ fontSize: 18.5, color: "var(--dim)", lineHeight: 1.65, maxWidth: 540, margin: "0 0 12px" }}>
-            Six years shipping banking software at Temenos — where I built an AI code-review tool and a RAG docs assistant for my team — plus five live products of my own, from an LLM-powered finance tracker to an OpenAI trip planner.
+            Six years on software where a bug moves money the wrong way — now building with LLMs. An AI code-review tool and a RAG docs assistant at Temenos, plus five live products of my own.
           </p>
           <p className="mono" style={{ fontSize: 12.5, color: "var(--faint)", margin: "0 0 28px" }}>
             Senior Product Engineer @ Temenos · 6+ yrs · Hyderabad, IN

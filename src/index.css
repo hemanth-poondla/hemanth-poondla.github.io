@@ -235,6 +235,7 @@ svg [role="button"]:focus-visible rect {
   .form-2 { grid-template-columns: 1fr !important; }
   .sec { padding-left: 18px !important; padding-right: 18px !important; }
   .page-h1 { font-size: 40px !important; }
+  .map-legend { padding: 8px 10px !important; gap: 4px 10px !important; bottom: 26px !important; }
   /* Tighter section headings on small screens */
   .sec h2 { font-size: 25px !important; line-height: 1.2 !important; }
 }
@@ -247,5 +248,7 @@ svg [role="button"]:focus-visible rect {
   .page-h1 { font-size: 31px !important; }
   .sec h2 { font-size: 22px !important; }
   .sec { padding-left: 16px !important; padding-right: 16px !important; }
+  /* Too cramped on phones — the filter chips already carry the colour key */
+  .map-legend { display: none !important; }
   .chatwin { width: calc(100vw - 24px) !important; right: 12px !important; bottom: 84px !important; }
 }

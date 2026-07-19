@@ -136,23 +136,27 @@ export default function TravelMapInner() {
 
       {/* Map */}
       <div style={{ position: "relative", border: "1px solid var(--border)", borderRadius: 20, background: "var(--surface)", overflow: "hidden" }}>
-        <div className="mono" style={{ position: "absolute", top: 14, right: 14, zIndex: 2, display: "flex", alignItems: "center", gap: 7, fontSize: 11, color: "var(--dim)", background: "var(--bg)", border: "1px solid var(--border)", borderRadius: 999, padding: "6px 12px" }}>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2Z" /></svg>
-          {filtered.length} places explored
-        </div>
+        {/* Map area is its own positioning context, so overlays anchor to the
+            map rather than the card (which grows when a place is selected). */}
+        <div style={{ position: "relative" }}>
+          <div className="mono" style={{ position: "absolute", top: 14, right: 14, zIndex: 2, display: "flex", alignItems: "center", gap: 7, fontSize: 11, color: "var(--dim)", background: "var(--bg)", border: "1px solid var(--border)", borderRadius: 999, padding: "6px 12px" }}>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2Z" /></svg>
+            {filtered.length} places explored
+          </div>
 
-        <div ref={containerRef} style={{ width: "100%", aspectRatio: "16 / 9", minHeight: 320 }} />
+          <div ref={containerRef} style={{ width: "100%", aspectRatio: "16 / 9", minHeight: 320 }} />
 
-        {/* Legend */}
-        <div style={{ position: "absolute", bottom: 34, left: 14, zIndex: 2, background: "var(--bg)", border: "1px solid var(--border)", borderRadius: 12, padding: "10px 14px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px 16px" }}>
-          {countries.map((c) => (
-            <span key={c} className="mono" style={{ display: "inline-flex", alignItems: "center", gap: 7, fontSize: 10.5, color: "var(--mute)" }}>
-              <span style={{ width: 9, height: 9, borderRadius: 999, background: countryColors[c], border: "1px solid rgba(255,255,255,0.5)" }} />{c}
+          {/* Legend — sits above the attribution strip, inside the map area */}
+          <div className="map-legend" style={{ position: "absolute", bottom: 30, left: 14, zIndex: 2, background: "var(--bg)", border: "1px solid var(--border)", borderRadius: 12, padding: "10px 14px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px 16px" }}>
+            {countries.map((c) => (
+              <span key={c} className="mono" style={{ display: "inline-flex", alignItems: "center", gap: 7, fontSize: 10.5, color: "var(--mute)" }}>
+                <span style={{ width: 9, height: 9, borderRadius: 999, background: countryColors[c], border: "1px solid rgba(255,255,255,0.5)" }} />{c}
+              </span>
+            ))}
+            <span className="mono" style={{ display: "inline-flex", alignItems: "center", gap: 7, fontSize: 10.5, color: "var(--mute)" }}>
+              <span style={{ width: 9, height: 9, borderRadius: 999, background: "#ef4444", border: "1px solid rgba(255,255,255,0.5)" }} />Home (Hyderabad)
             </span>
-          ))}
-          <span className="mono" style={{ display: "inline-flex", alignItems: "center", gap: 7, fontSize: 10.5, color: "var(--mute)" }}>
-            <span style={{ width: 9, height: 9, borderRadius: 999, background: "#ef4444", border: "1px solid rgba(255,255,255,0.5)" }} />Home (Hyderabad)
-          </span>
+          </div>
         </div>
 
         {/* Selection bar */}
