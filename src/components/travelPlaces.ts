@@ -1,0 +1,81 @@
+export interface Place {
+  name: string;
+  region: string;
+  country: string;
+  isHome?: boolean;
+  coordinates: [number, number]; // [lng, lat]
+}
+
+export const countryColors: Record<string, string> = {
+  India: "#f97316",
+  "Sri Lanka": "#10b981",
+  UAE: "#3b82f6",
+  Oman: "#a855f7",
+  "South Africa": "#eab308",
+};
+
+export const countries = ["India", "Sri Lanka", "UAE", "Oman", "South Africa"];
+
+export const places: Place[] = [
+  { name: "Delhi", region: "Delhi", country: "India", coordinates: [77.209, 28.6139] },
+  { name: "Agra", region: "Uttar Pradesh", country: "India", coordinates: [78.0081, 27.1767] },
+  { name: "Amritsar", region: "Punjab", country: "India", coordinates: [74.8723, 31.634] },
+  { name: "Shimla", region: "Himachal Pradesh", country: "India", coordinates: [77.1734, 31.1048] },
+  { name: "Spiti Valley", region: "Himachal Pradesh", country: "India", coordinates: [78.0349, 32.2464] },
+  { name: "Chandigarh", region: "Punjab/Haryana", country: "India", coordinates: [76.7794, 30.7333] },
+  { name: "Lucknow", region: "Uttar Pradesh", country: "India", coordinates: [80.9462, 26.8467] },
+  { name: "Prayagraj", region: "Uttar Pradesh", country: "India", coordinates: [81.8463, 25.4358] },
+  { name: "Jaipur", region: "Rajasthan", country: "India", coordinates: [75.7873, 26.9124] },
+  { name: "Udaipur", region: "Rajasthan", country: "India", coordinates: [73.7125, 24.5854] },
+  { name: "Jaisalmer", region: "Rajasthan", country: "India", coordinates: [70.9083, 26.9157] },
+  { name: "Jodhpur", region: "Rajasthan", country: "India", coordinates: [73.0243, 26.2389] },
+  { name: "Bhuj", region: "Gujarat", country: "India", coordinates: [69.6669, 23.2419] },
+  { name: "Dwarka", region: "Gujarat", country: "India", coordinates: [68.9685, 22.2442] },
+  { name: "Rann of Kutch", region: "Gujarat", country: "India", coordinates: [69.8597, 23.7337] },
+  { name: "Surat", region: "Gujarat", country: "India", coordinates: [72.8311, 21.1702] },
+  { name: "Pune", region: "Maharashtra", country: "India", coordinates: [73.8567, 18.5204] },
+  { name: "Mumbai", region: "Maharashtra", country: "India", coordinates: [72.8777, 19.076] },
+  { name: "Navi Mumbai", region: "Maharashtra", country: "India", coordinates: [73.0297, 19.033] },
+  { name: "Dandeli", region: "Karnataka", country: "India", coordinates: [74.6174, 15.2497] },
+  { name: "Mysore", region: "Karnataka", country: "India", coordinates: [76.6394, 12.2958] },
+  { name: "Bangalore", region: "Karnataka", country: "India", coordinates: [77.5946, 12.9716] },
+  { name: "Coorg", region: "Karnataka", country: "India", coordinates: [75.8069, 12.3375] },
+  { name: "Goa", region: "Goa", country: "India", coordinates: [74.124, 15.2993] },
+  { name: "Alleppey", region: "Kerala", country: "India", coordinates: [76.3388, 9.4981] },
+  { name: "Wayanad", region: "Kerala", country: "India", coordinates: [76.132, 11.6854] },
+  { name: "Munnar", region: "Kerala", country: "India", coordinates: [77.0595, 10.0889] },
+  { name: "Tirupati", region: "Andhra Pradesh", country: "India", coordinates: [79.4192, 13.6288] },
+  { name: "Arunachalam", region: "Tamil Nadu", country: "India", coordinates: [79.0677, 12.2253] },
+  { name: "Vijayawada", region: "Andhra Pradesh", country: "India", coordinates: [80.648, 16.5062] },
+  { name: "Guntur", region: "Andhra Pradesh", country: "India", coordinates: [80.4365, 16.3067] },
+  { name: "Hyderabad", region: "Telangana", country: "India", coordinates: [78.4867, 17.385], isHome: true },
+  { name: "Bhubaneshwar", region: "Odisha", country: "India", coordinates: [85.8245, 20.2961] },
+  { name: "Puri", region: "Odisha", country: "India", coordinates: [85.8312, 19.8135] },
+  { name: "Kolkata", region: "West Bengal", country: "India", coordinates: [88.3639, 22.5726] },
+  { name: "Colombo", region: "Western Province", country: "Sri Lanka", coordinates: [79.8612, 6.9271] },
+  { name: "Negombo", region: "Western Province", country: "Sri Lanka", coordinates: [79.8358, 7.2083] },
+  { name: "Trincomalee", region: "Eastern Province", country: "Sri Lanka", coordinates: [81.2152, 8.5874] },
+  { name: "Unawatuna", region: "Southern Province", country: "Sri Lanka", coordinates: [80.249, 6.0169] },
+  { name: "Yala National Park", region: "Southern Province", country: "Sri Lanka", coordinates: [81.5169, 6.3725] },
+  { name: "Ella", region: "Uva Province", country: "Sri Lanka", coordinates: [81.0466, 6.8667] },
+  { name: "Nuwara Eliya", region: "Central Province", country: "Sri Lanka", coordinates: [80.7891, 6.9497] },
+  { name: "Galle", region: "Southern Province", country: "Sri Lanka", coordinates: [80.221, 6.0535] },
+  { name: "Adam's Peak", region: "Sabaragamuwa", country: "Sri Lanka", coordinates: [80.4994, 6.8094] },
+  { name: "Dambulla", region: "Central Province", country: "Sri Lanka", coordinates: [80.6518, 7.856] },
+  { name: "Sigiriya", region: "Central Province", country: "Sri Lanka", coordinates: [80.7603, 7.957] },
+  { name: "Dubai", region: "Dubai", country: "UAE", coordinates: [55.2708, 25.2048] },
+  { name: "Abu Dhabi", region: "Abu Dhabi", country: "UAE", coordinates: [54.3773, 24.4539] },
+  { name: "Muscat", region: "Muscat Governorate", country: "Oman", coordinates: [58.3829, 23.588] },
+  { name: "Bimmah Sinkhole", region: "Muscat Governorate", country: "Oman", coordinates: [59.0781, 23.0392] },
+  { name: "Wadi Shab", region: "Ash Sharqiyah", country: "Oman", coordinates: [59.2372, 22.8411] },
+  { name: "Nizwa", region: "Ad Dakhiliyah", country: "Oman", coordinates: [57.5333, 22.9333] },
+  { name: "Daymaniyat Islands", region: "Muscat Governorate", country: "Oman", coordinates: [58.0833, 23.85] },
+  { name: "Johannesburg", region: "Gauteng", country: "South Africa", coordinates: [28.0473, -26.2041] },
+  { name: "Port Elizabeth", region: "Eastern Cape", country: "South Africa", coordinates: [25.5701, -33.918] },
+  { name: "Kruger National Park", region: "Mpumalanga", country: "South Africa", coordinates: [31.5547, -23.9884] },
+  { name: "Storms River", region: "Eastern Cape", country: "South Africa", coordinates: [23.9, -33.9667] },
+  { name: "Knysna", region: "Western Cape", country: "South Africa", coordinates: [23.0471, -34.0363] },
+  { name: "Gansbaai", region: "Western Cape", country: "South Africa", coordinates: [19.3508, -34.5803] },
+  { name: "Hermanus", region: "Western Cape", country: "South Africa", coordinates: [19.2345, -34.4187] },
+  { name: "Cape Town", region: "Western Cape", country: "South Africa", coordinates: [18.4241, -33.9249] },
+];
