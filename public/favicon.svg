@@ -1,0 +1,30 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#12121a"/>
+      <stop offset="1" stop-color="#0a0a10"/>
+    </linearGradient>
+    <linearGradient id="hp" x1="16" y1="20" x2="48" y2="46" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#a99fff"/>
+    </linearGradient>
+  </defs>
+  <rect x="1.5" y="1.5" width="61" height="61" rx="15" fill="url(#bg)" stroke="#8b7dff" stroke-width="2"/>
+  <!-- AI architecture node graph -->
+  <g stroke="#8b7dff" stroke-width="1.6" opacity="0.9">
+    <line x1="13" y1="13" x2="24" y2="24"/>
+    <line x1="51" y1="13" x2="40" y2="24"/>
+    <line x1="13" y1="51" x2="24" y2="40"/>
+    <line x1="51" y1="51" x2="40" y2="40"/>
+  </g>
+  <g fill="#8b7dff">
+    <circle cx="13" cy="13" r="3"/>
+    <circle cx="51" cy="13" r="3"/>
+    <circle cx="13" cy="51" r="3"/>
+    <circle cx="51" cy="51" r="3"/>
+  </g>
+  <!-- central accent node -->
+  <circle cx="32" cy="32" r="2.4" fill="#4ade80"/>
+  <!-- HP monogram -->
+  <text x="32" y="40" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="24" font-weight="700" fill="url(#hp)" letter-spacing="0.5">HP</text>
+</svg>

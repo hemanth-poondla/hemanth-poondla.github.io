@@ -3,26 +3,23 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router-dom";
-import { ThemeProvider } from "next-themes";
+import { ThemeProvider } from "./contexts/ThemeContext";
 import { AnimatedRoutes } from "./components/AnimatedRoutes";
-import { AdminProvider } from "./contexts/AdminContext";
-import { AdminToggle } from "./components/AdminToggle";
+import { ChatBot } from "./components/ChatBot";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-      <AdminProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <AnimatedRoutes />
-            <AdminToggle />
-          </BrowserRouter>
-        </TooltipProvider>
-      </AdminProvider>
+    <ThemeProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <AnimatedRoutes />
+          <ChatBot />
+        </BrowserRouter>
+      </TooltipProvider>
     </ThemeProvider>
   </QueryClientProvider>
 );

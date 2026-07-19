@@ -1,112 +1,166 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
-import { Moon, Sun, Menu, X } from "lucide-react";
-import { useTheme } from "next-themes";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { useTheme } from "@/contexts/ThemeContext";
 
 const navItems = [
-  { name: "Home", path: "/" },
-  { name: "About", path: "/about" },
-  { name: "Work", path: "/work" },
-  { name: "Projects", path: "/projects" },
-  { name: "Contact", path: "/contact" },
+  { name: "home", path: "/" },
+  { name: "about", path: "/about" },
+  { name: "work", path: "/work" },
+  { name: "projects", path: "/projects" },
 ];
 
-export function Header() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { theme, setTheme } = useTheme();
-  const location = useLocation();
+function SunIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <circle cx="12" cy="12" r="4"></circle>
+      <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path>
+    </svg>
+  );
+}
 
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 10);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+function MoonIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"></path>
+    </svg>
+  );
+}
+
+export function Header() {
+  const { theme, toggle } = useTheme();
+  const location = useLocation();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <motion.header
-      initial={{ y: -20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        isScrolled ? "bg-background/80 backdrop-blur-md border-b border-border" : "bg-transparent"
-      )}
-    >
-      <div className="container mx-auto px-6 h-16 flex items-center justify-between">
-        <Link to="/" className="text-lg font-serif tracking-tight">
-          Hemanth Poondla
+    <header style={{ position: "sticky", top: 18, zIndex: 50, display: "flex", justifyContent: "center", padding: "0 20px" }}>
+      <div
+        style={{
+          position: "relative",
+          display: "flex",
+          alignItems: "center",
+          gap: 22,
+          background: "var(--header)",
+          backdropFilter: "blur(14px)",
+          WebkitBackdropFilter: "blur(14px)",
+          border: "1px solid var(--border)",
+          borderRadius: 999,
+          padding: "9px 10px 9px 20px",
+          boxShadow: "var(--shadow)",
+          maxWidth: "100%",
+        }}
+      >
+        <Link to="/" style={{ display: "flex", alignItems: "center", gap: 9 }} onClick={() => setMenuOpen(false)}>
+          <span style={{ width: 8, height: 8, borderRadius: 999, background: "var(--signal)", animation: "livePulse 2.4s ease-in-out infinite" }} />
+          <span className="mono" style={{ fontSize: 13 }}>hemanth.poondla</span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="nav-links" style={{ display: "flex", alignItems: "center", gap: 18 }}>
           {navItems.map((item) => (
             <Link
               key={item.path}
               to={item.path}
-              className={cn(
-                "text-sm transition-colors duration-200",
-                location.pathname === item.path
-                  ? "text-foreground"
-                  : "text-muted-foreground hover:text-foreground"
-              )}
+              className="mono"
+              style={{ fontSize: 12.5, color: location.pathname === item.path ? "var(--text)" : "var(--mute)" }}
             >
               {item.name}
             </Link>
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-          >
-            <Sun className="h-4 w-4 rotate-0 scale-100 transition-transform dark:-rotate-90 dark:scale-0" />
-            <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-transform dark:rotate-0 dark:scale-100" />
-          </Button>
+        <button
+          onClick={toggle}
+          title="Toggle theme"
+          aria-label="Toggle theme"
+          style={{
+            width: 36,
+            height: 36,
+            borderRadius: 999,
+            border: "1px solid var(--border)",
+            background: "var(--surface)",
+            color: "var(--text)",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 0,
+          }}
+        >
+          {theme === "dark" ? <SunIcon /> : <MoonIcon />}
+        </button>
 
-          <Button
-            variant="ghost"
-            size="icon"
-            className="md:hidden"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
-          </Button>
-        </div>
-      </div>
+        <Link
+          to="/contact"
+          style={{ fontSize: 13, fontWeight: 600, background: "var(--accent)", color: "#fff", padding: "9px 18px", borderRadius: 999 }}
+        >
+          Connect
+        </Link>
 
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden border-b border-border bg-background"
+        {/* Mobile hamburger */}
+        <button
+          className="nav-burger"
+          onClick={() => setMenuOpen((v) => !v)}
+          aria-label="Menu"
+          aria-expanded={menuOpen}
+          style={{
+            width: 36,
+            height: 36,
+            borderRadius: 999,
+            border: "1px solid var(--border)",
+            background: "var(--surface)",
+            color: "var(--text)",
+            cursor: "pointer",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 0,
+          }}
+        >
+          {menuOpen ? (
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6 6 18M6 6l12 12" /></svg>
+          ) : (
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 12h18M3 6h18M3 18h18" /></svg>
+          )}
+        </button>
+
+        {/* Mobile menu panel */}
+        {menuOpen && (
+          <div
+            style={{
+              position: "absolute",
+              top: "calc(100% + 10px)",
+              left: 0,
+              right: 0,
+              background: "var(--header)",
+              backdropFilter: "blur(14px)",
+              WebkitBackdropFilter: "blur(14px)",
+              border: "1px solid var(--border)",
+              borderRadius: 18,
+              boxShadow: "var(--shadow)",
+              padding: 10,
+              display: "flex",
+              flexDirection: "column",
+              gap: 2,
+            }}
           >
-            <nav className="container mx-auto px-6 py-4 flex flex-col gap-1">
-              {navItems.map((item) => (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={cn(
-                    "py-2 text-sm transition-colors",
-                    location.pathname === item.path
-                      ? "text-foreground"
-                      : "text-muted-foreground"
-                  )}
-                >
-                  {item.name}
-                </Link>
-              ))}
-            </nav>
-          </motion.div>
+            {navItems.map((item) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                onClick={() => setMenuOpen(false)}
+                className="mono"
+                style={{
+                  fontSize: 14,
+                  padding: "11px 14px",
+                  borderRadius: 12,
+                  color: location.pathname === item.path ? "var(--text)" : "var(--mute)",
+                  background: location.pathname === item.path ? "var(--surface2)" : "transparent",
+                }}
+              >
+                {item.name}
+              </Link>
+            ))}
+          </div>
         )}
-      </AnimatePresence>
-    </motion.header>
+      </div>
+    </header>
   );
 }

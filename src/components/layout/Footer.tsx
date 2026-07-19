@@ -1,49 +1,17 @@
-import { Link } from "react-router-dom";
-import { Github, Linkedin, Mail, Heart } from "lucide-react";
-
-const socialLinks = [
-  { icon: Github, href: "https://github.com/hemanth-poondla", label: "GitHub" },
-  { icon: Linkedin, href: "https://linkedin.com/in/hemanth-poondla", label: "LinkedIn" },
-  { icon: Mail, href: "mailto:poondlahemanth1@gmail.com", label: "Email" },
-];
-
 export function Footer() {
   return (
-    <footer className="border-t border-border">
-      <div className="container mx-auto px-6 py-12">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex flex-col items-center md:items-start gap-1">
-            <Link to="/" className="text-lg font-serif">Hemanth Poondla</Link>
-            <p className="text-sm text-muted-foreground">
-              Senior Product Engineer
-            </p>
-          </div>
-
-          <div className="flex items-center gap-4">
-            {socialLinks.map((social) => (
-              <a
-                key={social.label}
-                href={social.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-foreground transition-colors hover:scale-110 transform duration-200"
-                aria-label={social.label}
-              >
-                <social.icon className="h-5 w-5" />
-              </a>
-            ))}
-          </div>
-        </div>
-
-        <div className="mt-8 pt-8 border-t border-border text-center">
-          <p className="text-sm text-muted-foreground flex items-center justify-center gap-1 flex-wrap">
-            Made with <Heart className="h-4 w-4 text-red-500 animate-pulse" /> by a proud Indian
-            <span className="ml-1">🇮🇳</span>
-          </p>
-          <p className="text-xs text-muted-foreground mt-2">
-            © {new Date().getFullYear()} All rights reserved.
-          </p>
-        </div>
+    <footer style={{ borderTop: "1px solid var(--border)" }}>
+      <div style={{ maxWidth: 1180, margin: "0 auto", padding: 32, textAlign: "center" }}>
+        <p
+          className="mono"
+          style={{ fontSize: 12, color: "var(--faint)", margin: 0, display: "flex", alignItems: "center", justifyContent: "center", gap: 6, flexWrap: "wrap" }}
+        >
+          Made with
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="var(--accent)" style={{ animation: "livePulse 2s ease-in-out infinite" }}>
+            <path d="M12 21s-7.5-4.9-10-9.3C.5 8.6 2 5 5.5 5c2 0 3.4 1.2 4.5 2.6C11.1 6.2 12.5 5 14.5 5 18 5 19.5 8.6 22 11.7 19.5 16.1 12 21 12 21Z"></path>
+          </svg>
+          by Hemanth Poondla · © {new Date().getFullYear()}
+        </p>
       </div>
     </footer>
   );

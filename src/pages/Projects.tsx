@@ -1,192 +1,161 @@
-import { motion } from "framer-motion";
-import { ExternalLink, Sparkles } from "lucide-react";
+import { useState } from "react";
 import { Layout } from "@/components/layout/Layout";
-import { Button } from "@/components/ui/button";
-import { TypingText } from "@/components/TypingText";
 
-const projects = [
+const sora = "'Sora', sans-serif";
+const gradTitle: React.CSSProperties = { background: "var(--title)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" };
+
+interface Project {
+  title: string;
+  subtitle: string;
+  endpoint: string;
+  slotId: string;
+  description: string;
+  features: string[];
+  tech: string[];
+  liveUrl: string;
+}
+
+const projects: Project[] = [
   {
-    id: "trip-captain",
-    title: "Trip Captain",
-    subtitle: "AI-Powered Travel Planning",
-    description: "Trip Captain is an intelligent travel planning platform that leverages AI to create personalized itineraries. Users can input their preferences, budget, and travel dates to receive comprehensive trip plans including accommodations, activities, and local recommendations. The platform features real-time collaboration, smart suggestions based on weather and local events, and seamless booking integration.",
-    features: [
-      "AI-powered itinerary generation",
-      "Real-time collaboration for group trips",
-      "Smart budget optimization",
-      "Local recommendations and hidden gems",
-      "Weather-aware planning",
-    ],
-    tech: ["React", "TypeScript", "Tailwind CSS", "Supabase", "OpenAI API", "Framer Motion"],
-    image: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800&q=80",
-    liveUrl: "https://tripcaptain.werde.app/",
+    title: "FinX", subtitle: "AI-powered personal finance", endpoint: "finx.werde.app", slotId: "p-finx",
+    description: "My flagship applied-AI product. Track expenses, investments, budgets and trips in one place, with an LLM that auto-categorizes transactions straight from your Gmail and SMS — real users, real data.",
+    features: ["LLM auto-categorization from Gmail & SMS", "Unified expenses, investments, budgets & trips", "The base for a fine-tuned text classifier", "AI-assisted insights and summaries"],
+    tech: ["React", "TypeScript", "Supabase", "LLM", "Framer Motion"], liveUrl: "https://finx.werde.app/",
   },
   {
-    id: "wardrobe-by-werde",
-    title: "Wardrobe by werde",
-    subtitle: "Smart Wardrobe Management",
-    description: "Wardrobe by werde revolutionizes how you manage your wardrobe. This intelligent styling application helps users organize their clothing, get AI-powered outfit recommendations based on weather, occasion, and personal style preferences. The app learns from your choices to provide increasingly personalized suggestions, making getting dressed effortless and stylish.",
-    features: [
-      "Digital wardrobe organization",
-      "AI-powered outfit recommendations",
-      "Weather-based styling suggestions",
-      "Occasion-specific outfit planning",
-      "Style analytics and insights",
-    ],
-    tech: ["React", "TypeScript", "Tailwind CSS", "Supabase", "AI/ML Integration", "Framer Motion"],
-    image: "https://images.unsplash.com/photo-1558171813-4c088753af8f?w=800&q=80",
-    liveUrl: "https://wardrobe.werde.app/",
+    title: "Trip Captain", subtitle: "OpenAI-powered trip planning", endpoint: "tripcaptain.werde.app", slotId: "p-trip",
+    description: "An intelligent travel-planning platform built directly on the OpenAI API. Enter your preferences, budget and dates to get a comprehensive itinerary — accommodations, activities and local gems included.",
+    features: ["AI itinerary generation via the OpenAI API", "Real-time collaboration for group trips", "Smart budget optimization", "Weather-aware planning & local recommendations"],
+    tech: ["React", "TypeScript", "Supabase", "OpenAI API", "Framer Motion"], liveUrl: "https://tripcaptain.werde.app/",
   },
   {
-    id: "settle-by-werde",
-    title: "Settle by werde",
-    subtitle: "Expense Splitting Made Easy",
-    description: "Settle by werde is a smart expense splitting app that simplifies shared finances. Whether you're splitting dinner with friends, sharing rent with roommates, or managing group travel expenses, Settle makes it effortless to track who owes what and settle up with ease. The app features intuitive expense tracking, automatic balance calculations, and seamless settlement options.",
-    features: [
-      "Easy expense tracking and splitting",
-      "Automatic balance calculations",
-      "Group expense management",
-      "Settlement history and reminders",
-      "Multi-currency support",
-    ],
-    tech: ["React", "TypeScript", "Tailwind CSS", "Supabase", "Framer Motion"],
-    image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=80",
-    liveUrl: "https://settle.werde.app/",
+    title: "Wardrobe by werde", subtitle: "AI styling assistant", endpoint: "wardrobe.werde.app", slotId: "p-wardrobe",
+    description: "A styling app that digitizes your wardrobe and generates AI outfit recommendations by weather, occasion and personal taste — learning from your choices to get more personal over time.",
+    features: ["Digital wardrobe organization", "AI/ML outfit recommendations", "Weather & occasion-based styling", "Style analytics and insights"],
+    tech: ["React", "TypeScript", "Supabase", "AI/ML", "Framer Motion"], liveUrl: "https://wardrobe.werde.app/",
+  },
+  {
+    title: "Settle by werde", subtitle: "Group expenses, sorted", endpoint: "settle.werde.app", slotId: "p-settle",
+    description: "A Splitwise alternative with more of the features people actually ask for. Split dinners, rent or group travel effortlessly, with automatic balance calculations and a clean settle-up flow.",
+    features: ["Flexible bill splitting (equal, shares, exact)", "Automatic balance calculations", "Group expense management", "Settlement history and reminders"],
+    tech: ["React", "TypeScript", "Supabase", "Framer Motion"], liveUrl: "https://settle.werde.app/",
+  },
+  {
+    title: "mywayaround", subtitle: "Full-stack travel journal", endpoint: "mywayaround.blog", slotId: "p-mwa",
+    description: "A complete, live travel-journal product — auth, newsletter, a content Studio and a '5 questions to your matched trip' planning quiz, all on a Supabase backend. A strong end-to-end full-stack proof point.",
+    features: ["Auth, newsletter and a content Studio", "“5 questions → matched trip” planning quiz", "Supabase backend with real content", "Candidate for an embeddings-based upgrade"],
+    tech: ["React", "Supabase", "Auth", "TypeScript"], liveUrl: "https://mywayaround.blog/",
   },
 ];
 
+const building = [
+  { title: "Document RAG Assistant", status: "in progress", eta: "Q4 2026", description: "Retrieval assistant over my travel-research corpus — chunking, embeddings and vector search with cited answers.", tech: ["RAG", "Embeddings", "Vector DB"] },
+  { title: "MCP Tool Server", status: "in progress", eta: "Q4 2026", description: "Read-only MCP tools over real FinX / Settle data — expense lookups and balance checks exposed to any agent.", tech: ["MCP", "Connectors"] },
+  { title: "Agentic Trip Planner", status: "designing", eta: "Q1 2027", description: "A LangGraph agent chaining the RAG assistant and MCP tools into a structured, budget-aware trip proposal.", tech: ["LangGraph", "RAG", "MCP"] },
+];
+
 const Projects = () => {
+  const [preview, setPreview] = useState<Record<string, boolean>>({});
+  const toggle = (id: string) => setPreview((p) => ({ ...p, [id]: !p[id] }));
+
   return (
     <Layout>
-      <section className="py-24">
-        <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center max-w-2xl mx-auto mb-20"
-          >
-            <p className="font-mono text-sm text-muted-foreground mb-4 flex items-center justify-center gap-2">
-              <Sparkles className="h-4 w-4" />
-              SELECTED WORK
-            </p>
-            <h1 className="text-4xl md:text-5xl font-serif tracking-tight mb-6">
-              <TypingText text="Projects" speed={100} pauseTime={3000} />
-            </h1>
-            <p className="text-lg text-muted-foreground">
-              Personal projects I've built to explore new technologies and solve real-world problems. 
-              Each project represents my passion for creating meaningful digital experiences.
-            </p>
-          </motion.div>
+      {/* Hero */}
+      <section className="fu sec" style={{ maxWidth: 720, margin: "0 auto", padding: "72px 32px 48px", textAlign: "center" }}>
+        <span className="mono" style={{ fontSize: 12, color: "var(--accent)" }}>// deployed.systems</span>
+        <h1 className="page-h1" style={{ fontFamily: sora, fontSize: 52, fontWeight: 700, letterSpacing: "-0.03em", margin: "12px 0 16px", ...gradTitle }}>Projects</h1>
+        <p style={{ fontSize: 18, color: "var(--dim)", lineHeight: 1.6, margin: 0 }}>
+          Real, shipped products — each one live and in the hands of users. Hit <span style={{ color: "var(--accent)" }}>live preview</span> to see any of them running right here.
+        </p>
+      </section>
 
-          <div className="space-y-24">
-            {projects.map((project, index) => (
-              <motion.article
-                key={project.id}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
-                className="grid lg:grid-cols-2 gap-12 items-center"
-              >
-                <motion.div 
-                  className={index % 2 === 1 ? "lg:order-2" : ""}
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                >
-                  <div className="relative rounded-2xl overflow-hidden border border-border group">
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="w-full aspect-video object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
-                      <Button asChild className="rounded-full">
-                        <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
-                          <ExternalLink className="mr-2 h-4 w-4" />
-                          Visit Live Site
-                        </a>
-                      </Button>
-                    </div>
-                  </div>
-                </motion.div>
-
-                <div className={index % 2 === 1 ? "lg:order-1" : ""}>
-                  <p className="font-mono text-xs text-muted-foreground mb-2">
-                    {project.subtitle}
-                  </p>
-                  <h2 className="text-3xl font-serif mb-4">{project.title}</h2>
-                  <p className="text-muted-foreground mb-6 leading-relaxed">
-                    {project.description}
-                  </p>
-
-                  <div className="mb-6">
-                    <h3 className="text-sm font-semibold mb-3">Key Features</h3>
-                    <ul className="space-y-2">
-                      {project.features.map((feature, i) => (
-                        <motion.li 
-                          key={feature} 
-                          className="flex items-start gap-2 text-sm text-muted-foreground"
-                          initial={{ opacity: 0, x: -10 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ delay: i * 0.1 }}
-                        >
-                          <span className="text-primary mt-1">✦</span>
-                          {feature}
-                        </motion.li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="mb-8">
-                    <h3 className="text-sm font-semibold mb-3">Tech Stack</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {project.tech.map((tech, i) => (
-                        <motion.span
-                          key={tech}
-                          className="px-3 py-1 text-xs font-mono bg-secondary rounded-full hover:bg-primary/10 transition-colors"
-                          initial={{ opacity: 0, scale: 0.8 }}
-                          whileInView={{ opacity: 1, scale: 1 }}
-                          viewport={{ once: true }}
-                          transition={{ delay: i * 0.05 }}
-                          whileHover={{ scale: 1.05 }}
-                        >
-                          {tech}
-                        </motion.span>
-                      ))}
-                    </div>
-                  </div>
-
-                  <Button asChild variant="outline" className="rounded-full group">
-                    <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="mr-2 h-4 w-4 group-hover:rotate-12 transition-transform" />
-                      View Project
-                    </a>
-                  </Button>
+      {/* Project rows */}
+      <section className="sec" style={{ maxWidth: 1120, margin: "0 auto", padding: "20px 32px 40px", display: "flex", flexDirection: "column", gap: 56 }}>
+        {projects.map((p, i) => {
+          const on = !!preview[p.slotId];
+          const mediaOrder = i % 2 === 1 ? 2 : 1;
+          const textOrder = i % 2 === 1 ? 1 : 2;
+          return (
+            <div key={p.slotId} className="proj-row" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 44, alignItems: "center" }}>
+              {/* Media */}
+              <div className="proj-media" style={{ order: mediaOrder, position: "relative", overflow: "hidden", border: "1px solid var(--border)", borderRadius: 20, background: "var(--solid)", boxShadow: "0 30px 70px -40px rgba(0,0,0,0.9)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "11px 14px", borderBottom: "1px solid var(--border)", background: "var(--surface)" }}>
+                  <span style={{ width: 9, height: 9, borderRadius: 999, background: "#3a3a42" }} />
+                  <span style={{ width: 9, height: 9, borderRadius: 999, background: "#3a3a42" }} />
+                  <span style={{ width: 9, height: 9, borderRadius: 999, background: "#3a3a42" }} />
+                  <span className="mono" style={{ marginLeft: 6, flex: 1, fontSize: 11.5, color: "var(--faint)", background: "var(--surface)", borderRadius: 6, padding: "4px 10px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{p.endpoint}</span>
+                  <button onClick={() => toggle(p.slotId)} className="mono" style={{ display: "inline-flex", alignItems: "center", gap: 6, cursor: "pointer", border: "1px solid var(--border)", background: "var(--surface2)", color: "var(--dim)", fontSize: 11, borderRadius: 999, padding: "5px 10px", whiteSpace: "nowrap" }}>
+                    <span style={{ width: 6, height: 6, borderRadius: 999, background: "#4ade80", animation: "livePulse 2.4s ease-in-out infinite" }} />
+                    {on ? "screenshot" : "live preview"}
+                  </button>
                 </div>
-              </motion.article>
-            ))}
-          </div>
+                <div style={{ position: "relative", width: "100%", aspectRatio: "16 / 10", background: "var(--solid)" }}>
+                  {on ? (
+                    <iframe src={p.liveUrl} title={`${p.title} preview`} loading="lazy" style={{ width: "250%", height: "250%", border: 0, display: "block", background: "#fff", transform: "scale(0.4)", transformOrigin: "top left" }} />
+                  ) : (
+                    <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 12, background: "linear-gradient(160deg,var(--surface2),transparent)" }}>
+                      <div style={{ width: 46, height: 46, borderRadius: 12, background: "rgba(139,125,255,0.12)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="1.8"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="9" cy="9" r="2" /><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21" /></svg>
+                      </div>
+                      <p className="mono" style={{ fontSize: 12, color: "var(--faint)", margin: 0, textAlign: "center", padding: "0 16px" }}>Click <span style={{ color: "var(--accent)" }}>live preview</span> to load {p.title}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
 
-          {/* More projects coming soon */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mt-24 py-16 border border-dashed border-border rounded-2xl"
-          >
-            <motion.span 
-              className="text-4xl mb-4 block"
-              animate={{ rotate: [0, 10, -10, 0] }}
-              transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 }}
-            >
-              🚀
-            </motion.span>
-            <p className="text-lg font-semibold mb-2">More projects coming soon!</p>
-            <p className="text-muted-foreground">
-              Currently cooking up something exciting. Stay tuned!
-            </p>
-          </motion.div>
+              {/* Text */}
+              <div className="proj-text" style={{ order: textOrder }}>
+                <p className="mono" style={{ fontSize: 12, color: "var(--accent)", margin: "0 0 8px" }}>{p.subtitle}</p>
+                <h2 style={{ fontFamily: sora, fontSize: 34, fontWeight: 600, letterSpacing: "-0.02em", margin: "0 0 14px" }}>{p.title}</h2>
+                <p style={{ fontSize: 15.5, color: "var(--dim)", lineHeight: 1.65, margin: "0 0 20px" }}>{p.description}</p>
+                <ul style={{ margin: "0 0 22px", padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 10 }}>
+                  {p.features.map((f) => (
+                    <li key={f} style={{ display: "flex", alignItems: "flex-start", gap: 10, fontSize: 14.5, color: "var(--dim)", lineHeight: 1.5 }}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2.4" style={{ marginTop: 2, flexShrink: 0 }}><path d="M20 6 9 17l-5-5" /></svg>
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 7, marginBottom: 24 }}>
+                  {p.tech.map((t) => (
+                    <span key={t} className="mono" style={{ padding: "5px 11px", fontSize: 11, color: "var(--mute)", background: "var(--chip)", borderRadius: 6 }}>{t}</span>
+                  ))}
+                </div>
+                <a href={p.liveUrl} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 9, padding: "12px 22px", borderRadius: 12, background: "var(--accent)", color: "#fff", fontSize: 14.5, fontWeight: 600, boxShadow: "0 16px 40px -16px rgba(139,125,255,0.7)" }}>
+                  Visit live site
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><path d="M15 3h6v6M10 14 21 3" /></svg>
+                </a>
+              </div>
+            </div>
+          );
+        })}
+      </section>
+
+      {/* Building next */}
+      <section className="sec" style={{ maxWidth: 1120, margin: "0 auto", padding: "24px 32px 40px" }}>
+        <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 22, flexWrap: "wrap" }}>
+          <span className="mono" style={{ fontSize: 13, color: "#c99a3a" }}>// on.the.workbench</span>
+          <h2 style={{ fontFamily: sora, fontSize: 26, fontWeight: 600, letterSpacing: "-0.02em", margin: 0, color: "var(--text)" }}>What I'm building next</h2>
+        </div>
+        <div className="g3" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 16 }}>
+          {building.map((b) => (
+            <div key={b.title} style={{ border: "1px dashed rgba(201,154,58,0.3)", borderRadius: 18, background: "linear-gradient(160deg,rgba(201,154,58,0.06),rgba(255,255,255,0.01))", padding: 26 }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
+                <span className="mono" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "5px 11px", border: "1px solid rgba(201,154,58,0.3)", borderRadius: 999 }}>
+                  <span style={{ width: 7, height: 7, borderRadius: 999, background: "#c99a3a", animation: "livePulse 2.4s ease-in-out infinite" }} />
+                  <span style={{ fontSize: 11.5, color: "#c99a3a" }}>{b.status}</span>
+                </span>
+                <span className="mono" style={{ fontSize: 11.5, color: "var(--faint)" }}>{b.eta}</span>
+              </div>
+              <h4 style={{ fontFamily: sora, fontSize: 18, fontWeight: 600, margin: "0 0 8px" }}>{b.title}</h4>
+              <p style={{ fontSize: 14, color: "var(--mute)", lineHeight: 1.55, margin: "0 0 16px" }}>{b.description}</p>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 7 }}>
+                {b.tech.map((t) => (
+                  <span key={t} className="mono" style={{ padding: "5px 10px", fontSize: 11, color: "#c99a3a", background: "rgba(201,154,58,0.08)", borderRadius: 6 }}>{t}</span>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
       </section>
     </Layout>
