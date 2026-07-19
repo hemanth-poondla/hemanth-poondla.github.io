@@ -13,6 +13,8 @@ interface Project {
   features: string[];
   tech: string[];
   liveUrl: string;
+  /** True when the site blocks iframe embedding (X-Frame-Options), so no live preview. */
+  noEmbed?: boolean;
 }
 
 const projects: Project[] = [
@@ -44,7 +46,7 @@ const projects: Project[] = [
     title: "mywayaround", subtitle: "Full-stack travel journal", endpoint: "mywayaround.blog", slotId: "p-mwa",
     description: "A complete, live travel-journal product — auth, newsletter, a content Studio and a '5 questions to your matched trip' planning quiz, all on a Supabase backend. A strong end-to-end full-stack proof point.",
     features: ["Auth, newsletter and a content Studio", "“5 questions → matched trip” planning quiz", "Supabase backend with real content", "Candidate for an embeddings-based upgrade"],
-    tech: ["React", "Supabase", "Auth", "TypeScript"], liveUrl: "https://mywayaround.blog/",
+    tech: ["React", "Supabase", "Auth", "TypeScript"], liveUrl: "https://mywayaround.blog/", noEmbed: true,
   },
 ];
 
@@ -84,13 +86,24 @@ const Projects = () => {
                   <span style={{ width: 9, height: 9, borderRadius: 999, background: "#3a3a42" }} />
                   <span style={{ width: 9, height: 9, borderRadius: 999, background: "#3a3a42" }} />
                   <span className="mono" style={{ marginLeft: 6, flex: 1, fontSize: 11.5, color: "var(--faint)", background: "var(--surface)", borderRadius: 6, padding: "4px 10px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{p.endpoint}</span>
-                  <button onClick={() => toggle(p.slotId)} className="mono" style={{ display: "inline-flex", alignItems: "center", gap: 6, cursor: "pointer", border: "1px solid var(--border)", background: "var(--surface2)", color: "var(--dim)", fontSize: 11, borderRadius: 999, padding: "5px 10px", whiteSpace: "nowrap" }}>
-                    <span style={{ width: 6, height: 6, borderRadius: 999, background: "#4ade80", animation: "livePulse 2.4s ease-in-out infinite" }} />
-                    {on ? "screenshot" : "live preview"}
-                  </button>
+                  {!p.noEmbed && (
+                    <button onClick={() => toggle(p.slotId)} className="mono" style={{ display: "inline-flex", alignItems: "center", gap: 6, cursor: "pointer", border: "1px solid var(--border)", background: "var(--surface2)", color: "var(--dim)", fontSize: 11, borderRadius: 999, padding: "5px 10px", whiteSpace: "nowrap" }}>
+                      <span style={{ width: 6, height: 6, borderRadius: 999, background: "#4ade80", animation: "livePulse 2.4s ease-in-out infinite" }} />
+                      {on ? "screenshot" : "live preview"}
+                    </button>
+                  )}
                 </div>
                 <div style={{ position: "relative", width: "100%", aspectRatio: "16 / 10", background: "var(--solid)", overflow: "hidden" }}>
-                  {on ? (
+                  {p.noEmbed ? (
+                    <a href={p.liveUrl} target="_blank" rel="noopener noreferrer" style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 12, background: "linear-gradient(160deg,var(--surface2),transparent)", color: "var(--text)" }}>
+                      <div style={{ width: 46, height: 46, borderRadius: 12, background: "rgba(139,125,255,0.12)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="1.8"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><path d="M15 3h6v6M10 14 21 3" /></svg>
+                      </div>
+                      <p className="mono" style={{ fontSize: 12, color: "var(--faint)", margin: 0, textAlign: "center", padding: "0 20px", lineHeight: 1.5 }}>
+                        This site opens in its own tab —<br />embedded preview is blocked. <span style={{ color: "var(--accent)" }}>Open {p.endpoint} →</span>
+                      </p>
+                    </a>
+                  ) : on ? (
                     <iframe src={p.liveUrl} title={`${p.title} preview`} loading="lazy" style={{ position: "absolute", top: 0, left: 0, width: "250%", height: "250%", border: 0, display: "block", background: "#fff", transform: "scale(0.4)", transformOrigin: "top left" }} />
                   ) : (
                     <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 12, background: "linear-gradient(160deg,var(--surface2),transparent)" }}>
