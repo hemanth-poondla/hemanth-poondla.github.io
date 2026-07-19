@@ -89,9 +89,9 @@ const Projects = () => {
                     {on ? "screenshot" : "live preview"}
                   </button>
                 </div>
-                <div style={{ position: "relative", width: "100%", aspectRatio: "16 / 10", background: "var(--solid)" }}>
+                <div style={{ position: "relative", width: "100%", aspectRatio: "16 / 10", background: "var(--solid)", overflow: "hidden" }}>
                   {on ? (
-                    <iframe src={p.liveUrl} title={`${p.title} preview`} loading="lazy" style={{ width: "250%", height: "250%", border: 0, display: "block", background: "#fff", transform: "scale(0.4)", transformOrigin: "top left" }} />
+                    <iframe src={p.liveUrl} title={`${p.title} preview`} loading="lazy" style={{ position: "absolute", top: 0, left: 0, width: "250%", height: "250%", border: 0, display: "block", background: "#fff", transform: "scale(0.4)", transformOrigin: "top left" }} />
                   ) : (
                     <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 12, background: "linear-gradient(160deg,var(--surface2),transparent)" }}>
                       <div style={{ width: 46, height: 46, borderRadius: 12, background: "rgba(139,125,255,0.12)", display: "flex", alignItems: "center", justifyContent: "center" }}>
