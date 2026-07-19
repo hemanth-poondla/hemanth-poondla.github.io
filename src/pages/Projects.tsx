@@ -13,6 +13,8 @@ interface Project {
   features: string[];
   tech: string[];
   liveUrl: string;
+  /** Short capability signals so cards don't all read the same. */
+  signals: string[];
   /** True when the site blocks iframe embedding (X-Frame-Options), so no live preview. */
   noEmbed?: boolean;
 }
@@ -22,30 +24,35 @@ const projects: Project[] = [
     title: "FinX", subtitle: "AI-powered personal finance", endpoint: "finx.werde.app", slotId: "p-finx",
     description: "My flagship applied-AI product. Track expenses, investments, budgets and trips in one place, with an LLM that auto-categorizes transactions straight from your Gmail and SMS — real users, real data.",
     features: ["LLM auto-categorization from Gmail & SMS", "Unified expenses, investments, budgets & trips", "The base for a fine-tuned text classifier", "AI-assisted insights and summaries"],
+    signals: ["LLM auto-categorization", "Gmail + SMS ingestion", "Real users"],
     tech: ["React", "TypeScript", "Supabase", "LLM", "Framer Motion"], liveUrl: "https://finx.werde.app/",
   },
   {
     title: "Trip Captain", subtitle: "OpenAI-powered trip planning", endpoint: "tripcaptain.werde.app", slotId: "p-trip",
     description: "An intelligent travel-planning platform built directly on the OpenAI API. Enter your preferences, budget and dates to get a comprehensive itinerary — accommodations, activities and local gems included.",
     features: ["AI itinerary generation via the OpenAI API", "Real-time collaboration for group trips", "Smart budget optimization", "Weather-aware planning & local recommendations"],
+    signals: ["OpenAI API", "Group collaboration", "Weather-aware"],
     tech: ["React", "TypeScript", "Supabase", "OpenAI API", "Framer Motion"], liveUrl: "https://tripcaptain.werde.app/",
   },
   {
     title: "Wardrobe by werde", subtitle: "AI styling assistant", endpoint: "wardrobe.werde.app", slotId: "p-wardrobe",
     description: "A styling app that digitizes your wardrobe and generates AI outfit recommendations by weather, occasion and personal taste — learning from your choices to get more personal over time.",
     features: ["Digital wardrobe organization", "AI/ML outfit recommendations", "Weather & occasion-based styling", "Style analytics and insights"],
+    signals: ["AI/ML recommendations", "Learns your taste", "Image-heavy UI"],
     tech: ["React", "TypeScript", "Supabase", "AI/ML", "Framer Motion"], liveUrl: "https://wardrobe.werde.app/",
   },
   {
     title: "Settle by werde", subtitle: "Group expenses, sorted", endpoint: "settle.werde.app", slotId: "p-settle",
     description: "A Splitwise alternative with more of the features people actually ask for. Split dinners, rent or group travel effortlessly, with automatic balance calculations and a clean settle-up flow.",
     features: ["Flexible bill splitting (equal, shares, exact)", "Automatic balance calculations", "Group expense management", "Settlement history and reminders"],
+    signals: ["Multi-party balances", "Multi-currency", "Settle-up flow"],
     tech: ["React", "TypeScript", "Supabase", "Framer Motion"], liveUrl: "https://settle.werde.app/",
   },
   {
     title: "mywayaround", subtitle: "Full-stack travel journal", endpoint: "mywayaround.blog", slotId: "p-mwa",
     description: "A complete, live travel-journal product — auth, newsletter, a content Studio and a '5 questions to your matched trip' planning quiz, all on a Supabase backend. A strong end-to-end full-stack proof point.",
     features: ["Auth, newsletter and a content Studio", "“5 questions → matched trip” planning quiz", "Supabase backend with real content", "Candidate for an embeddings-based upgrade"],
+    signals: ["Full-stack + auth", "Content Studio", "Trip-matching quiz"],
     tech: ["React", "Supabase", "Auth", "TypeScript"], liveUrl: "https://mywayaround.blog/", noEmbed: true,
   },
 ];
@@ -119,8 +126,33 @@ const Projects = () => {
               {/* Text */}
               <div className="proj-text" style={{ order: textOrder }}>
                 <p className="mono" style={{ fontSize: 12, color: "var(--accent)", margin: "0 0 8px" }}>{p.subtitle}</p>
-                <h2 style={{ fontFamily: sora, fontSize: 34, fontWeight: 600, letterSpacing: "-0.02em", margin: "0 0 14px" }}>{p.title}</h2>
-                <p style={{ fontSize: 15.5, color: "var(--dim)", lineHeight: 1.65, margin: "0 0 20px" }}>{p.description}</p>
+                <h2 style={{ fontFamily: sora, fontSize: 34, fontWeight: 600, letterSpacing: "-0.02em", margin: "0 0 12px" }}>{p.title}</h2>
+
+                {/* Signal chips — the distinguishing capabilities at a glance */}
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 16 }}>
+                  {p.signals.map((s) => (
+                    <span
+                      key={s}
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 6,
+                        padding: "6px 12px",
+                        borderRadius: 999,
+                        background: "rgba(139,125,255,0.1)",
+                        border: "1px solid var(--border-strong)",
+                        fontSize: 12,
+                        fontWeight: 500,
+                        color: "var(--text)",
+                      }}
+                    >
+                      <span style={{ width: 5, height: 5, borderRadius: 999, background: "var(--accent)" }} />
+                      {s}
+                    </span>
+                  ))}
+                </div>
+
+                <p style={{ fontSize: 16, color: "var(--dim)", lineHeight: 1.7, margin: "0 0 20px" }}>{p.description}</p>
                 <ul style={{ margin: "0 0 22px", padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 10 }}>
                   {p.features.map((f) => (
                     <li key={f} style={{ display: "flex", alignItems: "flex-start", gap: 10, fontSize: 14.5, color: "var(--dim)", lineHeight: 1.5 }}>

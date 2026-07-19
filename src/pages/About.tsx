@@ -38,11 +38,14 @@ const About = () => {
         <span className="mono" style={{ fontSize: 12, color: "var(--accent)" }}>// about</span>
         <h1 className="page-h1" style={{ fontFamily: sora, fontSize: 52, fontWeight: 700, letterSpacing: "-0.03em", margin: "12px 0 14px", ...gradTitle }}>About Me</h1>
         <p className="mono" style={{ fontSize: 13, color: "var(--faint)", margin: "0 0 26px" }}>Hyderabad, India</p>
-        <p style={{ fontSize: 20, color: "var(--dim)", lineHeight: 1.6, margin: "0 0 18px" }}>
-          A product engineer who loves building things that matter — now channeling six years of shipping software into applied GenAI. Born and raised in Hyderabad, deeply rooted in Indian traditions, and endlessly curious about the world.
+        <p style={{ fontSize: 20.5, color: "var(--dim)", lineHeight: 1.65, margin: "0 0 18px" }}>
+          I spent six years building banking software — Trade Finance, payments, corporate origination — the kind of systems where a bug doesn't just annoy someone, it moves money the wrong way.
         </p>
-        <p style={{ fontSize: 16, color: "var(--mute)", lineHeight: 1.7, margin: 0 }}>
-          When I'm not wiring up LLMs or redesigning banking UX at Temenos, you'll find me plotting my next chess move, planning travel adventures, or cheering for cricket. I believe in working hard, staying grounded, and never stopping learning.
+        <p style={{ fontSize: 17, color: "var(--dim)", lineHeight: 1.7, margin: "0 0 18px" }}>
+          That taught me something most demos never do: <strong style={{ color: "var(--text)" }}>reliability isn't a feature you bolt on at the end</strong>. You design for the failure cases first. When I started building with LLMs — an AI code-review tool and a RAG docs assistant for my team at Temenos — I brought the same instinct. Ground the model in real data. Verify before you answer. Assume it will be wrong sometimes, and design for that.
+        </p>
+        <p style={{ fontSize: 17, color: "var(--mute)", lineHeight: 1.7, margin: 0 }}>
+          Five live products later, that's still how I work. Born and raised in Hyderabad, rooted in Indian traditions, and endlessly curious about the world — when I'm not wiring up LLMs you'll find me plotting my next chess move, planning the next trip, or cheering for cricket.
         </p>
       </section>
 

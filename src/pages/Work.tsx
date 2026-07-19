@@ -10,6 +10,7 @@ const jobs = [
     title: "Senior Product Engineer",
     company: "Temenos India Pvt. Ltd.",
     description: "Leading Supply Chain Finance UX, building internal AI tooling, and mentoring the team.",
+    highlights: ["Shipped an AI code-review tool", "Built a RAG docs assistant", "Top-ranked UX redesign"],
     responsibilities: [
       "Built and rolled out an AI-assisted code review tool (LLM analysis to flag issues and speed up reviews)",
       "Built a retrieval-based (RAG) documentation assistant for team docs",
@@ -25,6 +26,7 @@ const jobs = [
     title: "Software Development Engineer",
     company: "Temenos India Pvt. Ltd.",
     description: "Led Trade Finance features across a Corporate Banking application.",
+    highlights: ["Mentored 4 developers", "Built the Trade Finance suite", "Modularized a Retail Banking app"],
     responsibilities: [
       "Built Import LC, Export LC, Issued/Received Guarantees and Collections",
       "Mentored and trained 4 new developers to full role competency",
@@ -39,6 +41,7 @@ const jobs = [
     title: "Associate Software Development Engineer",
     company: "Kony India Pvt. Ltd.",
     description: "Contributed to Online and Mobile Banking modules.",
+    highlights: ["Owned User Management & FX UI", "Cut costs on legacy codebases"],
     responsibilities: [
       "Owned UI development for User Management and Foreign Exchange modules",
       "Delivered feature builds and critical bug fixes",
@@ -78,7 +81,34 @@ const Work = () => {
                 </div>
                 <h3 style={{ fontFamily: sora, fontSize: 22, fontWeight: 600, margin: "0 0 3px" }}>{j.title}</h3>
                 <p style={{ fontSize: 14.5, color: "var(--accent)", fontWeight: 500, margin: "0 0 14px" }}>{j.company}</p>
-                <p style={{ fontSize: 15, color: "var(--dim)", lineHeight: 1.55, margin: "0 0 16px" }}>{j.description}</p>
+                <p style={{ fontSize: 15.5, color: "var(--dim)", lineHeight: 1.6, margin: "0 0 16px" }}>{j.description}</p>
+
+                {/* Impact highlights */}
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 18 }}>
+                  {j.highlights.map((h) => (
+                    <span
+                      key={h}
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 7,
+                        padding: "7px 13px",
+                        borderRadius: 999,
+                        background: "rgba(139,125,255,0.1)",
+                        border: "1px solid var(--border-strong)",
+                        fontSize: 12.5,
+                        fontWeight: 500,
+                        color: "var(--text)",
+                      }}
+                    >
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2.2" style={{ flexShrink: 0 }}>
+                        <path d="M13 2 3 14h8l-1 8 10-12h-8l1-8Z" />
+                      </svg>
+                      {h}
+                    </span>
+                  ))}
+                </div>
+
                 <ul style={{ margin: "0 0 18px", padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 9 }}>
                   {j.responsibilities.map((r) => (
                     <li key={r} style={{ display: "flex", alignItems: "flex-start", gap: 10, fontSize: 14, color: "var(--mute)", lineHeight: 1.5 }}>
