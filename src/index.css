@@ -5,9 +5,9 @@
 @tailwind utilities;
 
 @layer base {
-  /* Dark is the default (matches hp-theme default). Named vars drive the
-     hand-authored design; the HSL tokens keep shadcn/ui components on-theme. */
-  :root,
+  /* Light is the default (matches hp-theme default). Named vars drive the
+     hand-authored design; the HSL tokens keep shadcn/ui components on-theme.
+     Dark is an explicit override below. */
   :root[data-theme="dark"] {
     --bg: #08080b;
     --surface: rgba(255, 255, 255, 0.025);
@@ -53,6 +53,7 @@
     --radius: 0.75rem;
   }
 
+  :root,
   :root[data-theme="light"] {
     --bg: #f5f5fb;
     --surface: rgba(24, 20, 48, 0.025);

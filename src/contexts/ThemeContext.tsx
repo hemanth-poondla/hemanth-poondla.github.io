@@ -21,7 +21,7 @@ function readInitialTheme(): Theme {
       /* ignore */
     }
   }
-  return "dark";
+  return "light";
 }
 
 function apply(theme: Theme) {
