@@ -30,23 +30,46 @@ const Contact = () => {
     setStatus("sending");
 
     const formData = new FormData(form);
+    const senderEmail = String(formData.get("email") || "");
+    const senderName = String(formData.get("name") || "");
+
     formData.append("access_key", WEB3FORMS_ACCESS_KEY);
     formData.append("from_name", "Portfolio Contact Form");
+    // So replying in Gmail goes back to the sender, not to Web3Forms.
+    formData.append("replyTo", senderEmail);
+    if (!String(formData.get("subject") || "").trim()) {
+      formData.set("subject", `Portfolio enquiry from ${senderName || "a visitor"}`);
+    }
 
     try {
       const response = await fetch("https://api.web3forms.com/submit", { method: "POST", body: formData });
       const data = await response.json();
-      if (data.success) {
-        setStatus("sent");
-        form.reset();
-        toast({ title: "Message sent! 🎉", description: "Thank you! I'll get back to you soon." });
-        setTimeout(() => setStatus("idle"), 5000);
-      } else {
-        throw new Error(data.message || "Something went wrong");
+
+      // Only ever show the confirmation when the API genuinely accepted it —
+      // a silent false success is what hid this problem in the first place.
+      if (!response.ok || !data?.success) {
+        console.error("Web3Forms rejected the submission:", { status: response.status, data });
+        setStatus("idle");
+        toast({
+          title: "Message not sent",
+          description: data?.message || `The form service returned an error (${response.status}). Please email me directly.`,
+          variant: "destructive",
+        });
+        return;
       }
+
+      setStatus("sent");
+      form.reset();
+      toast({ title: "Message sent! 🎉", description: "Thank you! I'll get back to you soon." });
+      setTimeout(() => setStatus("idle"), 5000);
     } catch (error) {
+      console.error("Contact form network error:", error);
       setStatus("idle");
-      toast({ title: "Oops! 😅", description: "Failed to send message. Please try again.", variant: "destructive" });
+      toast({
+        title: "Couldn't reach the form service",
+        description: "Please check your connection, or email me directly at poondlahemanth1@gmail.com.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -74,6 +97,15 @@ const Contact = () => {
             </div>
           )}
           <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            {/* Web3Forms honeypot — bots fill this, humans never see it */}
+            <input
+              type="checkbox"
+              name="botcheck"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              style={{ position: "absolute", width: 1, height: 1, opacity: 0, pointerEvents: "none" }}
+            />
             <div className="form-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
               <div>
                 <label className="mono" style={labelStyle}>NAME</label>
@@ -105,6 +137,14 @@ const Contact = () => {
                 </>
               )}
             </button>
+
+            {/* Fallback so an enquiry is never lost if the form service fails */}
+            <p className="mono" style={{ fontSize: 11.5, color: "var(--mute)", margin: 0, textAlign: "center" }}>
+              Prefer email?{" "}
+              <a href="mailto:poondlahemanth1@gmail.com" style={{ color: "var(--accent)" }}>
+                poondlahemanth1@gmail.com
+              </a>
+            </p>
           </form>
         </div>
 
