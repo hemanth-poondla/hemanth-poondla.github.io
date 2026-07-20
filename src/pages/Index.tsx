@@ -97,17 +97,18 @@ const Index = () => {
       </section>
 
       {/* ---------- Tech strip ---------- */}
-      <section className="sec" style={{ ...sec, padding: "8px 32px 24px" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 18, flexWrap: "wrap", justifyContent: "center" }}>
-          <span className="mono" style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--mute)" }}>Working across the modern AI stack</span>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center" }}>
-            {techStack.map((t) => (
-              <span key={t} className="mono" style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "6px 13px", border: "1px solid var(--border)", borderRadius: 999, fontSize: 12, color: "var(--text)" }}>
-                <span style={{ width: 6, height: 6, borderRadius: 999, background: "var(--accent)" }} />{t}
-              </span>
-            ))}
-          </div>
-        </div>
+      <section className="sec" style={{ ...sec, padding: "12px 32px 28px", textAlign: "center" }}>
+        <p className="mono" style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--mute)", margin: "0 0 12px" }}>
+          Working across the modern AI stack
+        </p>
+        <p className="mono" style={{ fontSize: 13.5, color: "var(--text)", lineHeight: 2, margin: "0 auto", maxWidth: 720 }}>
+          {techStack.map((t, i) => (
+            <span key={t}>
+              {i > 0 && <span style={{ color: "var(--faint)" }}>{"  ·  "}</span>}
+              {t}
+            </span>
+          ))}
+        </p>
       </section>
 
       {/* ---------- Stats (band, borderless) ---------- */}
