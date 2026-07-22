@@ -187,6 +187,24 @@
   border-color: var(--border-strong) !important;
 }
 
+/* Scrollable screenshot panel — full-page captures scroll inside the frame */
+.proj-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;
+}
+.proj-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+.proj-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.proj-scroll::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 999px;
+}
+
 /* Full-bleed tinted band — creates rhythm so sections don't all read the same */
 .band {
   background: var(--surface);
