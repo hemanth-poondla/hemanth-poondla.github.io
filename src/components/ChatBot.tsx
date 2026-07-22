@@ -1,35 +1,18 @@
 import { useState, useRef, useEffect } from "react";
 import { MessageCircle, X, Send } from "lucide-react";
-import { getApiKey } from "@/lib/crypto";
 
 interface Message {
   role: "user" | "assistant";
   content: string;
 }
 
-const SYSTEM_PROMPT = `You are Hemanth Poondla's portfolio assistant. You help visitors learn about Hemanth.
+/**
+ * Cloudflare Worker that holds the Groq API key server-side.
+ * The key must never live in this bundle — see worker/README.md.
+ */
+const CHAT_API_URL = "https://hp-chat.poondlahemanth1.workers.dev";
 
-About Hemanth:
-- AI/GenAI engineer based in Hyderabad, India (born and raised there), with 6+ years of product engineering at Temenos
-- At Temenos he built an AI-assisted code review tool and a retrieval-based (RAG) documentation assistant, and iterated on prompt design for internal LLM tooling
-- He spent six years on banking software (Trade Finance, payments, corporate origination) where reliability is critical - he brings that discipline to GenAI
-- Won office-level chess championships twice; cricket enthusiast and avid traveler (60+ places, 5 countries)
-
-Projects (all live):
-1. FinX (https://finx.werde.app/) - AI finance tracker; an LLM auto-categorizes expenses from Gmail & SMS.
-2. Trip Captain (https://tripcaptain.werde.app/) - itinerary generator built on the OpenAI API, with real-time collaboration and weather-aware planning.
-3. Wardrobe by werde (https://wardrobe.werde.app/) - AI/ML outfit recommendations by weather, occasion and personal style.
-4. Settle by werde (https://settle.werde.app/) - expense splitting; a sharper Splitwise with automatic balances.
-5. mywayaround (https://mywayaround.blog/) - full-stack travel journal on Supabase with auth, newsletter and a trip-matching quiz.
-
-Building next: a Document RAG Assistant, an MCP tool server over real FinX/Settle data, and a LangGraph agentic trip planner.
-
-Skills:
-- AI/GenAI: LangChain, RAG, OpenAI API, vector search, MCP, prompting
-- Frontend: React, TypeScript, Tailwind CSS, Framer Motion
-- Backend: Node.js, Supabase, REST APIs
-
-Keep responses friendly, concise (2-4 sentences unless asked for detail), and specific. If asked something you don't know about Hemanth, politely say you don't have that information. Never invent metrics or numbers.`;
+// The system prompt lives in the Worker, not here, so a caller can't replace it.
 
 const SUGGESTIONS = [
   "What did he build at Temenos?",
@@ -92,28 +75,31 @@ export function ChatBot() {
     setIsLoading(true);
 
     try {
-      const apiKey = getApiKey();
-      const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      // No API key here by design — the Worker adds it server-side.
+      const response = await fetch(CHAT_API_URL, {
         method: "POST",
-        headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          model: "llama-3.3-70b-versatile",
           messages: [
-            { role: "system", content: SYSTEM_PROMPT },
             ...messages.map((m) => ({ role: m.role, content: m.content })),
             { role: "user", content: userMessage },
           ],
-          max_tokens: 500,
         }),
       });
 
-      const data = await response.json();
-      if (response.status === 429 || data.error?.code === 429) {
-        setMessages((prev) => [...prev, { role: "assistant", content: "I'm getting too many requests right now. Please try again in a moment 🙏" }]);
+      const data = await response.json().catch(() => null);
+
+      if (!response.ok || !data?.reply) {
+        console.error("Chat proxy error:", { status: response.status, data });
+        const fallback =
+          response.status === 429
+            ? "I'm getting a lot of questions right now. Please try again in a moment 🙏"
+            : data?.error || "Sorry, I couldn't process that. Please try again.";
+        setMessages((prev) => [...prev, { role: "assistant", content: fallback }]);
         return;
       }
-      const assistantMessage = data.choices?.[0]?.message?.content || "Sorry, I couldn't process that. Please try again.";
-      setMessages((prev) => [...prev, { role: "assistant", content: assistantMessage }]);
+
+      setMessages((prev) => [...prev, { role: "assistant", content: data.reply }]);
     } catch (error) {
       console.error("Chat error:", error);
       setMessages((prev) => [...prev, { role: "assistant", content: "Oops — something went wrong. Please try again." }]);
