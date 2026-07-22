@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { AISystemDiagram } from "@/components/AISystemDiagram";
-import profileImage from "@/assets/profile.jpg";
+import profileImage from "@/assets/profile.webp";
 
 const techStack = ["OpenAI", "LangChain", "LangGraph", "RAG", "MCP", "Pinecone", "PyTorch", "FastAPI"];
 const ragFlow = ["Query", "Embed", "Retriever", "Vector DB", "Re-ranker", "LLM"];

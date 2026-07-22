@@ -1,6 +1,6 @@
 import { Layout } from "@/components/layout/Layout";
 import { TravelMap } from "@/components/TravelMap";
-import profileImage from "@/assets/profile.jpg";
+import profileImage from "@/assets/profile.webp";
 
 const sora = "'Sora', sans-serif";
 const gradTitle: React.CSSProperties = { background: "var(--title)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" };

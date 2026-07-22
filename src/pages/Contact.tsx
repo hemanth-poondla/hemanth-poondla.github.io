@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { useToast } from "@/hooks/use-toast";
-import profileImage from "@/assets/profile.jpg";
+import profileImage from "@/assets/profile.webp";
 
 const WEB3FORMS_ACCESS_KEY = "733101df-ea65-4f6f-8e6f-fa0d6a1fa8c0";
 const sora = "'Sora', sans-serif";
