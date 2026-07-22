@@ -22,3 +22,19 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Tooling scratch output
+.playwright-mcp/
+
+# Private working notes — this repo is public. context.md holds career strategy,
+# salary targets and a personal phone number; keep it local.
+context.md
+CONTEXT.md
+casestudy_fix.txt
+
+# Design mockup the site was built from — kept locally, not shipped
+handoff/
+
+# Resume source files. The published copy is public/resume.pdf
+Hemanth_Poondla_Resume_AI_*.docx
+Hemanth_Poondla_Resume_AI_*.pdf
