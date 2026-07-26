@@ -205,6 +205,43 @@
   border-radius: 999px;
 }
 
+/* ---- Linear-algebra motif ---- */
+/* Tall matrix brackets flanking the content column (fixed, decorative) */
+.matrix-frame {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.matrix-frame .mb {
+  position: absolute;
+  top: 14vh;
+  height: 72vh;
+  width: 26px;
+  opacity: 0.55;
+}
+.matrix-frame .mb-left {
+  left: max(14px, calc(50% - 620px));
+}
+.matrix-frame .mb-right {
+  right: max(14px, calc(50% - 620px));
+}
+@media (max-width: 1080px) {
+  .matrix-frame { display: none; }
+}
+
+/* Big square brackets around the stats vector */
+.vec-bracket {
+  font-family: 'Sora', sans-serif;
+  font-size: 34px;
+  font-weight: 300;
+  color: var(--border-strong);
+  transform: scaleY(2.2);
+  line-height: 1;
+  user-select: none;
+  flex-shrink: 0;
+}
+
 /* Full-bleed tinted band — creates rhythm so sections don't all read the same */
 .band {
   background: var(--surface);
@@ -245,6 +282,9 @@ svg [role="button"]:focus-visible rect {
   .skills-row { grid-template-columns: 44px 1fr !important; padding: 16px 18px !important; }
   .skills-row .meter { display: none !important; }
   .products { grid-template-columns: 1fr !important; }
+  .skill-canvas { height: 340px !important; }
+  /* stats vector: drop the notation flourishes, keep the numbers */
+  .vec-label, .vec-bracket { display: none !important; }
   .g3 { grid-template-columns: 1fr !important; }
   .g5 { grid-template-columns: repeat(2, 1fr) !important; }
   .proj-row { grid-template-columns: 1fr !important; }

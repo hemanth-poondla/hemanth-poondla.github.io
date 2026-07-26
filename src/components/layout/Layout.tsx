@@ -53,6 +53,17 @@ export function Layout({ children, secondaryGlow = false }: LayoutProps) {
         }}
       />
 
+      {/* Matrix-bracket framing — the whole page reads as one vector/matrix.
+          Fixed so the brackets hold as you scroll. Desktop-only, decorative. */}
+      <div className="matrix-frame" aria-hidden="true">
+        <svg className="mb mb-left" viewBox="0 0 24 100" preserveAspectRatio="none">
+          <path d="M20 2 L6 2 L6 98 L20 98" fill="none" stroke="var(--border-strong)" strokeWidth="1.4" vectorEffect="non-scaling-stroke" />
+        </svg>
+        <svg className="mb mb-right" viewBox="0 0 24 100" preserveAspectRatio="none">
+          <path d="M4 2 L18 2 L18 98 L4 98" fill="none" stroke="var(--border-strong)" strokeWidth="1.4" vectorEffect="non-scaling-stroke" />
+        </svg>
+      </div>
+
       <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", minHeight: "100vh" }}>
         <Header />
         <main style={{ flex: 1 }}>{children}</main>

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { AISystemDiagram } from "@/components/AISystemDiagram";
+import { SkillSpace } from "@/components/skills/SkillSpace";
 import profileImage from "@/assets/profile.webp";
 
 const techStack = ["OpenAI", "LangChain", "LangGraph", "RAG", "MCP", "Pinecone", "PyTorch", "FastAPI"];
@@ -14,20 +15,6 @@ const stats = [
   { value: "AI", label: "current focus" },
   { value: "#1", label: "internal UX redesign" },
 ];
-
-/** Every line has to prove something — no generic "React & TypeScript". */
-const skills = [
-  { name: "Product & UI/UX Design", cat: "Unified UX redesign for Supply Chain Finance — top-ranked internally", level: 5 },
-  { name: "React & TypeScript", cat: "6+ yrs building enterprise banking UI at Temenos", level: 5 },
-  { name: "LangChain & Agents", cat: "Orchestration and tooling behind my internal AI assistants", level: 4 },
-  { name: "RAG & Vector Search", cat: "Retrieval docs assistant shipped to my team at Temenos", level: 4 },
-  { name: "OpenAI API & Prompting", cat: "Powers Trip Captain's itinerary generation in production", level: 4 },
-].map((s, i) => ({
-  ...s,
-  rank: String(i + 1).padStart(2, "0"),
-  rankColor: i < 2 ? "var(--accent)" : "var(--faint)",
-  barColor: i < 2 ? "var(--accent)" : "#7c72c9",
-}));
 
 const products = [
   { title: "FinX", endpoint: "finx.werde.app", description: "AI finance tracker — an LLM auto-categorizes expenses straight from Gmail & SMS.", url: "https://finx.werde.app/" },
@@ -111,43 +98,34 @@ const Index = () => {
         </p>
       </section>
 
-      {/* ---------- Stats (band, borderless) ---------- */}
+      {/* ---------- Stats (band) — rendered as a labelled vector ---------- */}
       <div className="band">
-        <section className="stats sec" style={{ ...sec, padding: "26px 32px", display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 0 }}>
-          {stats.map((s) => (
-            <div key={s.label} className="stat-cell" style={{ padding: "6px 24px" }}>
-              <p style={{ fontFamily: sora, fontSize: 34, fontWeight: 700, margin: 0, ...gradTitle }}>{s.value}</p>
-              <p className="mono" style={{ fontSize: 12, color: "var(--mute)", margin: "6px 0 0" }}>{s.label}</p>
-            </div>
-          ))}
+        <section className="sec" style={{ ...sec, padding: "26px 32px", display: "flex", alignItems: "center", gap: 12 }}>
+          <span className="mono vec-label" style={{ fontSize: 12.5, color: "var(--faint)", whiteSpace: "nowrap" }}>experience =</span>
+          <span className="vec-bracket" aria-hidden="true">[</span>
+          <div className="stats" style={{ flex: 1, display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 0 }}>
+            {stats.map((s) => (
+              <div key={s.label} className="stat-cell" style={{ padding: "6px 24px" }}>
+                <p style={{ fontFamily: sora, fontSize: 34, fontWeight: 700, margin: 0, ...gradTitle }}>{s.value}</p>
+                <p className="mono" style={{ fontSize: 12, color: "var(--mute)", margin: "6px 0 0" }}>{s.label}</p>
+              </div>
+            ))}
+          </div>
+          <span className="vec-bracket" aria-hidden="true">]</span>
         </section>
       </div>
 
-      {/* ---------- Skills (borderless rows) ---------- */}
+      {/* ---------- Skills, as a vector space ---------- */}
       <section className="sec" style={{ ...sec, padding: "44px 32px 32px" }}>
         <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 6, flexWrap: "wrap" }}>
           <span className="mono" style={sectionLabel}>// core.stack</span>
-          <h2 style={h2Style}>What I'm strongest at</h2>
+          <h2 style={h2Style}>Skills, as a vector space</h2>
         </div>
-        <p style={{ fontSize: 16, color: "var(--mute)", margin: "0 0 8px", maxWidth: 640 }}>
-          Ranked by depth — each one tied to something I actually shipped.
+        <p style={{ fontSize: 16, color: "var(--mute)", margin: "0 0 24px", maxWidth: 680 }}>
+          Every skill is a vector. Related ones point the same way — so they line up on a shared beam, the way similar concepts cluster in an embedding. Orbit the space, then tap a beam.
         </p>
-        <div>
-          {skills.map((s) => (
-            <div key={s.name} className="skills-row" style={{ display: "grid", gridTemplateColumns: "56px 1fr 180px", alignItems: "center", gap: 22, padding: "20px 4px", borderTop: "1px solid var(--border)" }}>
-              <span className="mono" style={{ fontSize: 26, fontWeight: 600, color: s.rankColor, lineHeight: 1 }}>{s.rank}</span>
-              <div>
-                <h3 style={{ fontFamily: sora, fontSize: 20, fontWeight: 600, margin: "0 0 4px" }}>{s.name}</h3>
-                <p style={{ fontSize: 13.5, color: "var(--mute)", margin: 0, lineHeight: 1.5 }}>{s.cat}</p>
-              </div>
-              <div className="meter" style={{ display: "flex", gap: 5, justifyContent: "flex-end" }}>
-                {[1, 2, 3, 4, 5].map((n) => (
-                  <span key={n} style={{ width: 22, height: 7, borderRadius: 3, background: n <= s.level ? s.barColor : "var(--surface2)" }} />
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
+
+        <SkillSpace />
       </section>
 
       {/* ---------- Architectures (band) ---------- */}
