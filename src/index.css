@@ -170,6 +170,58 @@
   0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
   30% { transform: translateY(-5px); opacity: 1; }
 }
+/* ---- Contact form flourishes ---- */
+@keyframes checkDraw { to { stroke-dashoffset: 0; } }
+@keyframes ringPulse {
+  0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.4); }
+  70%, 100% { box-shadow: 0 0 0 16px rgba(74, 222, 128, 0); }
+}
+@keyframes sparkPop {
+  0% { transform: scale(0); opacity: 0; }
+  45% { transform: scale(1.25); opacity: 1; }
+  100% { transform: scale(0.5) translateY(-6px); opacity: 0; }
+}
+@keyframes shimmerSweep { to { background-position: 200% 0; } }
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.94); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.cf-field { transition: border-color 0.2s, box-shadow 0.2s, background 0.2s; }
+.cf-field:focus { border-color: var(--accent) !important; box-shadow: 0 0 0 3px rgba(139, 125, 255, 0.16); outline: none; }
+.cf-field::placeholder { color: var(--faint); }
+
+.cf-send { position: relative; overflow: hidden; transition: transform 0.15s, box-shadow 0.2s; }
+.cf-send:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 16px 38px -12px rgba(139, 125, 255, 0.75); }
+.cf-send .cf-arrow { transition: transform 0.2s; }
+.cf-send:hover:not(:disabled) .cf-arrow { transform: translateX(3px); }
+.cf-send.sending {
+  background-image: linear-gradient(100deg, var(--accent) 25%, #b4a9ff 50%, var(--accent) 75%);
+  background-size: 200% 100%;
+  animation: shimmerSweep 1.1s linear infinite;
+}
+
+.cf-chip { cursor: pointer; transition: border-color 0.15s, background 0.15s, color 0.15s, transform 0.12s; }
+.cf-chip:hover { transform: translateY(-1px); border-color: var(--border-strong); }
+
+/* ---- Vector packet flight (contact transmission scene) ---- */
+.tx-beam { stroke-dasharray: 5 7; animation: dashFlow 1.1s linear infinite; }
+.tx-cluster-beam { opacity: 0.3; }
+.tx-orb { transform-box: fill-box; transform-origin: center; animation: nodePulse 2.6s ease-in-out infinite; }
+.tx-newlanded { transform-box: fill-box; transform-origin: center; animation: landPop 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.tx-ring { transform-box: fill-box; transform-origin: center; opacity: 0; animation: burstRipple 1.3s ease-out forwards; }
+@keyframes landPop { 0% { transform: scale(0); } 60% { transform: scale(1.45); } 100% { transform: scale(1); } }
+@keyframes burstRipple { 0% { transform: scale(0.25); opacity: 0.9; } 100% { transform: scale(3.6); opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .cf-send.sending { animation: none; }
+  .cf-spark { display: none !important; }
+  .cf-check-ring { animation: none !important; }
+  .cf-check path { animation: none !important; stroke-dashoffset: 0 !important; }
+  .cf-success { animation: none !important; }
+  .tx-beam, .tx-orb, .tx-newlanded { animation: none !important; }
+  .tx-ring { display: none !important; }
+}
 @keyframes bgDrift {
   0% { transform: translate(0, 0); }
   50% { transform: translate(30px, -20px); }

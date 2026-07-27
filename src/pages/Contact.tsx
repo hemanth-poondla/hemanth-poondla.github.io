@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { useToast } from "@/hooks/use-toast";
 import profileImage from "@/assets/profile.webp";
@@ -6,6 +6,9 @@ import profileImage from "@/assets/profile.webp";
 const WEB3FORMS_ACCESS_KEY = "733101df-ea65-4f6f-8e6f-fa0d6a1fa8c0";
 const sora = "'Sora', sans-serif";
 const gradTitle: React.CSSProperties = { background: "var(--title)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" };
+
+const prefersReduced = () =>
+  typeof window !== "undefined" && window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 const fieldStyle: React.CSSProperties = {
   width: "100%",
@@ -20,13 +23,89 @@ const fieldStyle: React.CSSProperties = {
 };
 const labelStyle: React.CSSProperties = { display: "block", fontSize: 11, color: "var(--mute)", marginBottom: 7 };
 
+// ---- Transmission scene geometry (shared by the flight + landing phases) ----
+// Your message launches from the send button, flies a beam, and joins a little
+// vector-space — the same four directions as the skill constellation.
+const LAUNCH: [number, number] = [58, 190];
+const LAND: [number, number] = [286, 92];
+const CORE: [number, number] = [312, 74];
+const FLIGHT_PATH = `M${LAUNCH[0]} ${LAUNCH[1]} Q150 112 ${LAND[0]} ${LAND[1]}`;
+const DIM_ORBS: { p: [number, number]; c: string }[] = [
+  { p: [280, 50], c: "#8b7dff" }, // ai
+  { p: [346, 58], c: "#22d3ee" }, // frontend
+  { p: [352, 94], c: "#4ade80" }, // backend
+  { p: [320, 110], c: "#c99a3a" }, // domain
+];
+
+/** The mini vector-space. `phase` decides whether the packet is mid-flight,
+ *  landed (with a burst), or static (reduced-motion / in-transit). */
+function TransmitScene({ phase }: { phase: "flight" | "landed" | "static" }) {
+  return (
+    <svg viewBox="0 0 400 210" width="100%" style={{ display: "block", maxWidth: 440, margin: "0 auto" }} aria-hidden="true">
+      <defs>
+        <filter id="txglow" x="-70%" y="-70%" width="240%" height="240%">
+          <feGaussianBlur stdDeviation="3.4" />
+        </filter>
+      </defs>
+
+      {/* flight beam */}
+      {phase === "flight" && (
+        <path d={FLIGHT_PATH} className="tx-beam" fill="none" stroke="var(--accent)" strokeWidth="1.4" strokeLinecap="round" opacity="0.55" />
+      )}
+
+      {/* cluster beams from the core out to each direction */}
+      {DIM_ORBS.map((o, i) => (
+        <line key={i} className="tx-cluster-beam" x1={CORE[0]} y1={CORE[1]} x2={o.p[0]} y2={o.p[1]} stroke={o.c} strokeWidth="1" />
+      ))}
+      {/* the beam your message settles onto, drawn once it lands */}
+      {phase === "landed" && (
+        <line className="tx-cluster-beam" x1={CORE[0]} y1={CORE[1]} x2={LAND[0]} y2={LAND[1]} stroke="var(--accent)" strokeWidth="1.2" style={{ opacity: 0.55 }} />
+      )}
+
+      {/* origin core */}
+      <circle cx={CORE[0]} cy={CORE[1]} r="4" fill="#cfc8ff" filter="url(#txglow)" />
+      <circle cx={CORE[0]} cy={CORE[1]} r="2.6" fill="#efecff" />
+
+      {/* the existing points in the space */}
+      {DIM_ORBS.map((o, i) => (
+        <g key={i}>
+          <circle cx={o.p[0]} cy={o.p[1]} r="5" fill={o.c} filter="url(#txglow)" opacity="0.45" />
+          <circle className="tx-orb" cx={o.p[0]} cy={o.p[1]} r="3" fill={o.c} style={{ animationDelay: `${i * 0.3}s` }} />
+        </g>
+      ))}
+
+      {/* landing burst + your message as a new bright vector */}
+      {phase === "landed" && (
+        <>
+          <circle className="tx-ring" cx={LAND[0]} cy={LAND[1]} r="8" fill="none" stroke="var(--accent)" strokeWidth="1.6" />
+          <circle className="tx-ring" cx={LAND[0]} cy={LAND[1]} r="8" fill="none" stroke="var(--signal)" strokeWidth="1.2" style={{ animationDelay: "0.18s" }} />
+          <circle cx={LAND[0]} cy={LAND[1]} r="10" fill="var(--accent)" filter="url(#txglow)" opacity="0.7" />
+          <circle className="tx-newlanded" cx={LAND[0]} cy={LAND[1]} r="5" fill="#fff" />
+        </>
+      )}
+
+      {/* the packet in transit */}
+      {phase === "flight" && (
+        <g>
+          <circle r="9" fill="var(--accent)" filter="url(#txglow)" opacity="0.7" />
+          <circle r="4" fill="#efecff" />
+          <animateMotion dur="1.5s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.4 0 0.2 1" path={FLIGHT_PATH} />
+        </g>
+      )}
+    </svg>
+  );
+}
+
 const Contact = () => {
   const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
+  const [message, setMessage] = useState("");
+  const reduced = useRef(prefersReduced());
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
+    const startedAt = Date.now();
     setStatus("sending");
 
     const formData = new FormData(form);
@@ -46,7 +125,7 @@ const Contact = () => {
       const data = await response.json();
 
       // Only ever show the confirmation when the API genuinely accepted it —
-      // a silent false success is what hid this problem in the first place.
+      // a silent false success is what hid an earlier delivery problem.
       if (!response.ok || !data?.success) {
         console.error("Web3Forms rejected the submission:", { status: response.status, data });
         setStatus("idle");
@@ -58,10 +137,14 @@ const Contact = () => {
         return;
       }
 
-      setStatus("sent");
-      form.reset();
-      toast({ title: "Message sent! 🎉", description: "Thank you! I'll get back to you soon." });
-      setTimeout(() => setStatus("idle"), 5000);
+      // Let the packet finish its flight before the landing, even on a fast
+      // network — otherwise the animation is over before it's seen.
+      const flightRemaining = reduced.current ? 0 : Math.max(0, 1500 - (Date.now() - startedAt));
+      window.setTimeout(() => {
+        setStatus("sent");
+        form.reset();
+        setMessage("");
+      }, flightRemaining);
     } catch (error) {
       console.error("Contact form network error:", error);
       setStatus("idle");
@@ -76,76 +159,92 @@ const Contact = () => {
   return (
     <Layout>
       {/* Hero */}
-      <section className="sec" style={{ maxWidth: 960, margin: "0 auto", padding: "60px 32px 32px" }}>
+      <section className="sec" style={{ maxWidth: 960, margin: "0 auto", padding: "60px 32px 28px" }}>
         <span className="mono" style={{ fontSize: 12, color: "var(--accent)" }}>// open.a.connection</span>
-        <h1 className="page-h1" style={{ fontFamily: sora, fontSize: 48, fontWeight: 700, letterSpacing: "-0.03em", margin: "12px 0 12px", ...gradTitle }}>Get in touch</h1>
-        <p style={{ fontSize: 17, color: "var(--dim)", lineHeight: 1.6, margin: 0, maxWidth: 540 }}>
-          Have a role, a project, or an idea worth building with GenAI? Send a message — I read every one.
+        <h1 className="page-h1" style={{ fontFamily: sora, fontSize: 48, fontWeight: 700, letterSpacing: "-0.03em", margin: "12px 0 12px", ...gradTitle }}>Let's talk</h1>
+        <p style={{ fontSize: 17, color: "var(--dim)", lineHeight: 1.6, margin: 0, maxWidth: 560 }}>
+          A role, a project, or an idea worth building with GenAI? Send a message — it becomes a point in my inbox's vector space, and I usually reply within a day or two.
         </p>
       </section>
 
       <section className="contact-grid sec" style={{ maxWidth: 960, margin: "0 auto", padding: "0 32px 72px", display: "grid", gridTemplateColumns: "1.25fr 0.75fr", gap: 40, alignItems: "start" }}>
         {/* Form */}
-        <div style={{ position: "relative", border: "1px solid var(--border)", borderRadius: 20, background: "var(--surface)", padding: 30 }}>
-          {status === "sent" && (
-            <div style={{ position: "absolute", inset: 0, background: "var(--bg)", opacity: 0.96, borderRadius: 20, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", padding: 30, zIndex: 2 }}>
-              <div style={{ width: 54, height: 54, borderRadius: "50%", background: "rgba(74,222,128,0.15)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 14 }}>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--signal)" strokeWidth="2.4"><path d="M20 6 9 17l-5-5" /></svg>
-              </div>
-              <p style={{ fontFamily: sora, fontSize: 19, fontWeight: 600, margin: "0 0 6px" }}>Thanks for reaching out!</p>
-              <p style={{ fontSize: 14, color: "var(--mute)", margin: 0 }}>I'll get back to you soon.</p>
+        <div style={{ position: "relative", overflow: "hidden", border: "1px solid var(--border)", borderRadius: 20, background: "var(--surface)", padding: 30, boxShadow: "var(--shadow)" }}>
+          {/* ambient accent glow */}
+          <div style={{ position: "absolute", top: -80, right: -60, width: 240, height: 240, borderRadius: "50%", background: "radial-gradient(circle, var(--glow1), transparent 65%)", filter: "blur(30px)", pointerEvents: "none" }} />
+
+          {status === "sending" ? (
+            <div style={{ position: "relative", minHeight: 420, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 16 }} aria-live="polite">
+              <TransmitScene phase={reduced.current ? "static" : "flight"} />
+              <p className="mono" style={{ fontSize: 12.5, color: "var(--mute)", margin: 0, letterSpacing: "0.02em" }}>
+                embedding your message<span style={{ color: "var(--faint)" }}> · transmitting →</span>
+              </p>
+            </div>
+          ) : status === "sent" ? (
+            <div className="cf-success" style={{ position: "relative", textAlign: "center", minHeight: 420, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", animation: "popIn 0.4s cubic-bezier(0.2,0.7,0.2,1) both" }} aria-live="polite">
+              {/* sparkles */}
+              {[
+                { x: "16%", y: "10%", d: 0 }, { x: "84%", y: "16%", d: 0.15 }, { x: "10%", y: "40%", d: 0.3 },
+                { x: "90%", y: "46%", d: 0.1 }, { x: "26%", y: "70%", d: 0.25 }, { x: "76%", y: "74%", d: 0.35 },
+              ].map((s, i) => (
+                <span key={i} className="cf-spark" style={{ position: "absolute", left: s.x, top: s.y, width: 6, height: 6, borderRadius: 999, background: "var(--accent)", animation: `sparkPop 1.4s ${s.d}s ease-in-out infinite` }} />
+              ))}
+
+              <TransmitScene phase="landed" />
+              <p style={{ fontFamily: sora, fontSize: 22, fontWeight: 700, margin: "14px 0 8px" }}>Received ✦</p>
+              <p style={{ fontSize: 14.5, color: "var(--dim)", margin: "0 0 22px", lineHeight: 1.6, maxWidth: 380 }}>
+                Your message just landed as a new vector in my inbox. I'll get back to you within a day or two — thanks for reaching out.
+              </p>
+              <button
+                onClick={() => setStatus("idle")}
+                className="mono"
+                style={{ cursor: "pointer", fontSize: 12.5, padding: "10px 18px", borderRadius: 999, border: "1px solid var(--border-strong)", background: "rgba(139,125,255,0.1)", color: "var(--accent)" }}
+              >
+                Send another →
+              </button>
+            </div>
+          ) : (
+            <div style={{ position: "relative" }}>
+              <p className="mono" style={{ fontSize: 11, color: "var(--faint)", margin: "0 0 18px" }}>// new.message</p>
+
+              <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                {/* honeypot — bots fill this, humans never see it */}
+                <input type="checkbox" name="botcheck" tabIndex={-1} autoComplete="off" aria-hidden="true" style={{ position: "absolute", width: 1, height: 1, opacity: 0, pointerEvents: "none" }} />
+
+                <div className="form-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+                  <div>
+                    <label className="mono" style={labelStyle}>NAME</label>
+                    <input name="name" required placeholder="Your name" className="cf-field" style={{ ...fieldStyle, height: 46 }} />
+                  </div>
+                  <div>
+                    <label className="mono" style={labelStyle}>EMAIL</label>
+                    <input name="email" type="email" required placeholder="you@example.com" className="cf-field" style={{ ...fieldStyle, height: 46 }} />
+                  </div>
+                </div>
+                <div>
+                  <label className="mono" style={labelStyle}>SUBJECT</label>
+                  <input name="subject" required placeholder="What's on your mind?" className="cf-field" style={{ ...fieldStyle, height: 46 }} />
+                </div>
+                <div>
+                  <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between" }}>
+                    <label className="mono" style={labelStyle}>MESSAGE</label>
+                    <span className="mono" style={{ fontSize: 10.5, color: message.length > 0 ? "var(--mute)" : "var(--faint)" }}>{message.length} chars</span>
+                  </div>
+                  <textarea name="message" required rows={5} placeholder="Tell me about it…" value={message} onChange={(e) => setMessage(e.target.value)} className="cf-field" style={{ ...fieldStyle, padding: "12px 14px", resize: "none" }} />
+                </div>
+
+                <button type="submit" className="cf-send" style={{ height: 50, border: "none", borderRadius: 12, background: "var(--accent)", color: "#fff", fontSize: 15, fontWeight: 600, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 9, boxShadow: "0 12px 30px -14px rgba(139,125,255,0.7)" }}>
+                  Send message
+                  <svg className="cf-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m22 2-7 20-4-9-9-4 20-7Z" /></svg>
+                </button>
+
+                {/* fallback so an enquiry is never lost if the form service fails */}
+                <p className="mono" style={{ fontSize: 11.5, color: "var(--mute)", margin: 0, textAlign: "center" }}>
+                  Prefer email? <a href="mailto:poondlahemanth1@gmail.com" style={{ color: "var(--accent)" }}>poondlahemanth1@gmail.com</a>
+                </p>
+              </form>
             </div>
           )}
-          <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            {/* Web3Forms honeypot — bots fill this, humans never see it */}
-            <input
-              type="checkbox"
-              name="botcheck"
-              tabIndex={-1}
-              autoComplete="off"
-              aria-hidden="true"
-              style={{ position: "absolute", width: 1, height: 1, opacity: 0, pointerEvents: "none" }}
-            />
-            <div className="form-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
-              <div>
-                <label className="mono" style={labelStyle}>NAME</label>
-                <input name="name" required placeholder="Your name" style={{ ...fieldStyle, height: 46 }} />
-              </div>
-              <div>
-                <label className="mono" style={labelStyle}>EMAIL</label>
-                <input name="email" type="email" required placeholder="you@example.com" style={{ ...fieldStyle, height: 46 }} />
-              </div>
-            </div>
-            <div>
-              <label className="mono" style={labelStyle}>SUBJECT</label>
-              <input name="subject" required placeholder="Project inquiry" style={{ ...fieldStyle, height: 46 }} />
-            </div>
-            <div>
-              <label className="mono" style={labelStyle}>MESSAGE</label>
-              <textarea name="message" required rows={5} placeholder="Tell me about it..." style={{ ...fieldStyle, padding: "12px 14px", resize: "none" }} />
-            </div>
-            <button type="submit" disabled={status === "sending"} style={{ height: 48, border: "none", borderRadius: 11, background: "var(--accent)", color: "#fff", fontSize: 14.5, fontWeight: 600, cursor: status === "sending" ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 9 }}>
-              {status === "sending" ? (
-                <>
-                  <span style={{ width: 15, height: 15, border: "2px solid rgba(255,255,255,0.4)", borderTopColor: "#fff", borderRadius: "50%", display: "inline-block", animation: "spin 0.8s linear infinite" }} />
-                  Sending...
-                </>
-              ) : (
-                <>
-                  Send message
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m22 2-7 20-4-9-9-4 20-7Z" /></svg>
-                </>
-              )}
-            </button>
-
-            {/* Fallback so an enquiry is never lost if the form service fails */}
-            <p className="mono" style={{ fontSize: 11.5, color: "var(--mute)", margin: 0, textAlign: "center" }}>
-              Prefer email?{" "}
-              <a href="mailto:poondlahemanth1@gmail.com" style={{ color: "var(--accent)" }}>
-                poondlahemanth1@gmail.com
-              </a>
-            </p>
-          </form>
         </div>
 
         {/* Info */}
