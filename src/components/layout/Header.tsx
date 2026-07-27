@@ -34,6 +34,7 @@ export function Header() {
   return (
     <header style={{ position: "sticky", top: 18, zIndex: 50, display: "flex", justifyContent: "center", padding: "0 20px" }}>
       <div
+        className="nav-pill"
         style={{
           position: "relative",
           display: "flex",
@@ -49,9 +50,9 @@ export function Header() {
           maxWidth: "100%",
         }}
       >
-        <Link to="/" style={{ display: "flex", alignItems: "center", gap: 9 }} onClick={() => setMenuOpen(false)}>
-          <span style={{ width: 8, height: 8, borderRadius: 999, background: "var(--signal)", animation: "livePulse 2.4s ease-in-out infinite" }} />
-          <span className="mono" style={{ fontSize: 13 }}>hemanth.poondla</span>
+        <Link to="/" style={{ display: "flex", alignItems: "center", gap: 9, minWidth: 0, flexShrink: 1 }} onClick={() => setMenuOpen(false)}>
+          <span style={{ width: 8, height: 8, borderRadius: 999, background: "var(--signal)", flexShrink: 0, animation: "livePulse 2.4s ease-in-out infinite" }} />
+          <span className="mono" style={{ fontSize: 13, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>hemanth.poondla</span>
         </Link>
 
         <nav className="nav-links" style={{ display: "flex", alignItems: "center", gap: 18 }}>
@@ -71,6 +72,7 @@ export function Header() {
           onClick={toggle}
           title="Toggle theme"
           aria-label="Toggle theme"
+          className="nav-theme-btn"
           style={{
             width: 36,
             height: 36,
@@ -83,6 +85,7 @@ export function Header() {
             alignItems: "center",
             justifyContent: "center",
             padding: 0,
+            flexShrink: 0,
           }}
         >
           {theme === "dark" ? <SunIcon /> : <MoonIcon />}
@@ -90,7 +93,7 @@ export function Header() {
 
         <Link
           to="/contact"
-          style={{ fontSize: 13, fontWeight: 600, background: "var(--accent)", color: "#fff", padding: "9px 18px", borderRadius: 999 }}
+          style={{ fontSize: 13, fontWeight: 600, background: "var(--accent)", color: "#fff", padding: "9px 18px", borderRadius: 999, flexShrink: 0, whiteSpace: "nowrap" }}
         >
           Connect
         </Link>
@@ -112,6 +115,7 @@ export function Header() {
             alignItems: "center",
             justifyContent: "center",
             padding: 0,
+            flexShrink: 0,
           }}
         >
           {menuOpen ? (
@@ -156,6 +160,22 @@ export function Header() {
                 {item.name}
               </Link>
             ))}
+            <button
+              onClick={toggle}
+              className="mono"
+              style={{
+                display: "flex", alignItems: "center", justifyContent: "space-between",
+                fontSize: 14, padding: "11px 14px", borderRadius: 12, border: "none",
+                background: "transparent", color: "var(--mute)", cursor: "pointer",
+                marginTop: 4, borderTop: "1px solid var(--border)",
+              }}
+            >
+              <span>theme</span>
+              <span style={{ display: "inline-flex", alignItems: "center", gap: 7, color: "var(--text)" }}>
+                {theme === "dark" ? <SunIcon /> : <MoonIcon />}
+                {theme === "dark" ? "light" : "dark"}
+              </span>
+            </button>
           </div>
         )}
       </div>
