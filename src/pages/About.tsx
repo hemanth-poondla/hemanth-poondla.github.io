@@ -103,7 +103,7 @@ const About = () => {
           {lessons.map((l) => (
             <div key={l.n} className="hover-card" style={{ display: "flex", alignItems: "center", gap: 16, padding: "18px 22px", border: "1px solid var(--border)", borderRadius: 14, background: "var(--surface)" }}>
               <span className="mono" style={{ fontSize: 16, color: "var(--accent)", fontWeight: 600 }}>{l.n}</span>
-              <p style={{ fontSize: 15.5, color: "var(--dim)", fontStyle: "italic", margin: 0 }}>"{l.text}"</p>
+              <p style={{ fontFamily: "'Instrument Serif', Georgia, serif", fontSize: 20, lineHeight: 1.35, color: "var(--dim)", fontStyle: "italic", margin: 0 }}>"{l.text}"</p>
             </div>
           ))}
         </div>
