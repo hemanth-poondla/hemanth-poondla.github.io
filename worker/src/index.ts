@@ -27,6 +27,74 @@ const MAX_MESSAGES = 20;
 const MAX_CHARS_PER_MESSAGE = 2000;
 const MAX_TOTAL_CHARS = 12000;
 
+/**
+ * User-facing copy, surfaced verbatim in the chat bubble. The ones a visitor can
+ * hit mid-conversation still have to say what to do next — the joke rides along,
+ * it doesn't replace the information.
+ */
+const ERRORS = {
+  method: "POST only. GET out.",
+  origin: "Nice try. This origin isn't on the list.",
+  unconfigured: "Someone forgot to plug me in. Hemanth has been notified.",
+  badJson: "That's not JSON. That's just characters in a trench coat.",
+  noMessages: "You sent me nothing. I can work with a lot, but not nothing.",
+  badRole: "Roles are user or assistant only. No impostors.",
+  tooMany: "That's 20 messages. Even I need a breather — start a fresh chat?",
+  tooLong: "That's a lot of words. Trim it under 2000 and I'll read every one.",
+  chatTooLong: "We've been talking so long I'm losing the plot. Start fresh?",
+  rateLimited: "I'm suspiciously popular right now. Give me a second to catch up.",
+  unavailable: "My brain just went out for coffee. Try again in a moment.",
+  empty: "I've got absolutely nothing. Ask me that again?",
+  sqli: "Nice try, mate. There's no database back here — just me and some facts about Hemanth.",
+  script: "Nice try, mate. That's not running anywhere. Ask me something instead?",
+  upload: "Nice try, mate. No files, no screenshots, no pasted blobs — words only.",
+} as const;
+
+/**
+ * This endpoint takes plain questions about Hemanth and nothing else. There is no
+ * database and no file handling back here, so none of the below is exploitable —
+ * these patterns exist to bounce the attempt with a joke rather than quietly
+ * forwarding junk to Groq on Hemanth's quota.
+ *
+ * Deliberately narrow: a recruiter asking "does he know SQL?" or "what can you
+ * tell me about his database work?" must sail straight through. Every pattern
+ * needs real syntax structure, never just a keyword.
+ */
+const BLOCKED: { pattern: RegExp; error: string }[] = [
+  // SQL with actual statement shape — not the mere mention of a SQL word.
+  { pattern: /\bunion\s+(all\s+)?select\b/i, error: ERRORS.sqli },
+  // Requires the statement to terminate after the identifier — real SQL stops
+  // there, prose ("did he drop table stakes features?") carries on.
+  { pattern: /\b(drop|truncate)\s+(table|database|schema)\s+(if\s+exists\s+)?[\w."'`]+\s*(;|--|$)/i, error: ERRORS.sqli },
+  { pattern: /\binsert\s+into\s+[\w."'`]+\s*\(/i, error: ERRORS.sqli },
+  { pattern: /\bdelete\s+from\s+[\w."'`]+\s*(where|;|--|$)/i, error: ERRORS.sqli },
+  { pattern: /\bupdate\s+[\w."'`]+\s+set\s+[\w."'`]+\s*=/i, error: ERRORS.sqli },
+  { pattern: /\bselect\s+(\*|[\w.,\s]{1,60})\s+from\s+[\w."'`]+\s*(where\b|;|--)/i, error: ERRORS.sqli },
+  { pattern: /['")]\s*(or|and)\s+['"\w]+\s*=\s*['"\w]+/i, error: ERRORS.sqli },
+  { pattern: /\b(or|and)\s+1\s*=\s*1\b/i, error: ERRORS.sqli },
+  { pattern: /;\s*--/, error: ERRORS.sqli },
+  { pattern: /\b(information_schema|sqlite_master|pg_catalog|xp_cmdshell)\b/i, error: ERRORS.sqli },
+  { pattern: /\b(sleep|benchmark|pg_sleep)\s*\(\s*\d/i, error: ERRORS.sqli },
+
+  // Script / markup injection.
+  { pattern: /<\s*\/?\s*(script|iframe|object|embed|svg)\b/i, error: ERRORS.script },
+  { pattern: /\bjavascript\s*:/i, error: ERRORS.script },
+  { pattern: /\bon(error|load|click|mouseover|focus|toggle|submit)\s*=/i, error: ERRORS.script },
+
+  // Smuggled attachments: data URIs, or a raw base64 blob long enough to be a file.
+  { pattern: /\bdata:\s*[\w-]+\/[\w.+-]+\s*;\s*base64\s*,/i, error: ERRORS.upload },
+  { pattern: /\b(\/9j\/[A-Za-z0-9+/]{40}|iVBORw0KGgo[A-Za-z0-9+/]{30}|JVBERi0[A-Za-z0-9+/]{30})/, error: ERRORS.upload },
+  { pattern: /[A-Za-z0-9+/]{600,}={0,2}/, error: ERRORS.upload },
+];
+
+/** Returns the quirky error for the first pattern a message trips, or null. */
+function blockedReason(content: string): string | null {
+  for (const { pattern, error } of BLOCKED) {
+    if (pattern.test(content)) return error;
+  }
+  return null;
+}
+
 /** Held server-side so the prompt itself can't be replaced by a caller. */
 const SYSTEM_PROMPT = `You are Hemanth Poondla's portfolio assistant. You help visitors — recruiters, hiring managers, collaborators — learn about Hemanth. Speak about him in the third person.
 
@@ -103,29 +171,29 @@ export default {
       return new Response(null, { status: 204, headers: corsHeaders(isAllowed ? origin : "null") });
     }
     if (request.method !== "POST") {
-      return json({ error: "Method not allowed" }, 405, "null");
+      return json({ error: ERRORS.method }, 405, "null");
     }
     if (!isAllowed) {
-      return json({ error: "Origin not allowed" }, 403, "null");
+      return json({ error: ERRORS.origin }, 403, "null");
     }
     if (!env.GROQ_API_KEY) {
       console.error("GROQ_API_KEY secret is not set on the Worker");
-      return json({ error: "Server is not configured" }, 500, origin);
+      return json({ error: ERRORS.unconfigured }, 500, origin);
     }
 
     let payload: { messages?: unknown };
     try {
       payload = await request.json();
     } catch {
-      return json({ error: "Invalid JSON body" }, 400, origin);
+      return json({ error: ERRORS.badJson }, 400, origin);
     }
 
     const raw = payload?.messages;
     if (!Array.isArray(raw) || raw.length === 0) {
-      return json({ error: "messages must be a non-empty array" }, 400, origin);
+      return json({ error: ERRORS.noMessages }, 400, origin);
     }
     if (raw.length > MAX_MESSAGES) {
-      return json({ error: "Too many messages" }, 400, origin);
+      return json({ error: ERRORS.tooMany }, 400, origin);
     }
 
     // Accept only user/assistant turns — a client-supplied "system" message
@@ -136,16 +204,24 @@ export default {
       const role = (m as { role?: unknown })?.role;
       const content = (m as { content?: unknown })?.content;
       if ((role !== "user" && role !== "assistant") || typeof content !== "string") {
-        return json({ error: "Each message needs a user/assistant role and string content" }, 400, origin);
+        return json({ error: ERRORS.badRole }, 400, origin);
       }
       if (content.length > MAX_CHARS_PER_MESSAGE) {
-        return json({ error: "Message too long" }, 400, origin);
+        return json({ error: ERRORS.tooLong }, 400, origin);
+      }
+      // Only screen what the visitor typed — the assistant's own replies come back
+      // as history and must never be able to trip a filter meant for user input.
+      if (role === "user") {
+        const blocked = blockedReason(content);
+        if (blocked) {
+          return json({ error: blocked }, 400, origin);
+        }
       }
       total += content.length;
       messages.push({ role, content });
     }
     if (total > MAX_TOTAL_CHARS) {
-      return json({ error: "Conversation too long" }, 400, origin);
+      return json({ error: ERRORS.chatTooLong }, 400, origin);
     }
 
     try {
@@ -168,16 +244,13 @@ export default {
       if (!upstream.ok) {
         console.error("Groq error", upstream.status, data);
         // Never surface the upstream error verbatim — it can leak account detail.
-        const message =
-          upstream.status === 429
-            ? "Rate limited. Please try again in a moment."
-            : "The assistant is unavailable right now.";
+        const message = upstream.status === 429 ? ERRORS.rateLimited : ERRORS.unavailable;
         return json({ error: message }, upstream.status === 429 ? 429 : 502, origin);
       }
 
       const reply = (data as { choices?: { message?: { content?: string } }[] })?.choices?.[0]?.message?.content;
       if (!reply) {
-        return json({ error: "The assistant returned an empty response." }, 502, origin);
+        return json({ error: ERRORS.empty }, 502, origin);
       }
 
       return json({ reply }, 200, origin);

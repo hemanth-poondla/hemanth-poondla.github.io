@@ -38,3 +38,6 @@ handoff/
 # Resume source files. The published copy is public/resume.pdf
 Hemanth_Poondla_Resume_AI_*.docx
 Hemanth_Poondla_Resume_AI_*.pdf
+
+# Wrangler local build/state
+worker/.wrangler

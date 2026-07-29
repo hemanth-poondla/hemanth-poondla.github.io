@@ -127,10 +127,8 @@ export function ChatBot() {
 
       if (!response.ok || !data?.reply) {
         console.error("Chat proxy error:", { status: response.status, data });
-        const fallback =
-          response.status === 429
-            ? "I'm getting a lot of questions right now. Please try again in a moment 🙏"
-            : data?.error || "Sorry, I couldn't process that. Please try again.";
+        // The Worker owns this copy — only fall back if there was no JSON body at all.
+        const fallback = data?.error || "That one got away from me. Try again?";
         setMessages((prev) => [...prev, { role: "assistant", content: fallback }]);
         return;
       }
@@ -138,9 +136,34 @@ export function ChatBot() {
       setMessages((prev) => [...prev, { role: "assistant", content: data.reply }]);
     } catch (error) {
       console.error("Chat error:", error);
-      setMessages((prev) => [...prev, { role: "assistant", content: "Oops — something went wrong. Please try again." }]);
+      setMessages((prev) => [...prev, { role: "assistant", content: "Can't reach me from here. Check your connection?" }]);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  /** Bounce an attachment attempt with a reply in the assistant's voice. */
+  const refuseAttachment = () => {
+    setMessages((prev) => [
+      ...prev,
+      { role: "assistant", content: "Nice try, mate — no files or screenshots here. Words only." },
+    ]);
+  };
+
+  // This is a text assistant: there's no file input, but a clipboard image or a
+  // dragged file are the two ways one arrives anyway. Pasted *text* still works.
+  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    const items = Array.from(e.clipboardData?.items ?? []);
+    if (items.some((item) => item.kind === "file")) {
+      e.preventDefault();
+      refuseAttachment();
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    if (e.dataTransfer?.types?.includes("Files")) {
+      e.preventDefault();
+      refuseAttachment();
     }
   };
 
@@ -180,6 +203,8 @@ export function ChatBot() {
       {isOpen && (
         <div
           className="chatwin"
+          onDragOver={(e) => { if (e.dataTransfer?.types?.includes("Files")) e.preventDefault(); }}
+          onDrop={handleDrop}
           style={{
             position: "fixed",
             bottom: "calc(max(24px, env(safe-area-inset-bottom)) + 66px)",
@@ -299,6 +324,7 @@ export function ChatBot() {
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
+              onPaste={handlePaste}
               placeholder="Ask anything about his work..."
               disabled={isLoading}
               style={{ flex: 1, height: 42, padding: "0 14px", background: "var(--field)", border: "1px solid var(--border)", borderRadius: 11, color: "var(--text)", fontSize: 13.5, fontFamily: "'DM Sans', sans-serif", boxSizing: "border-box" }}
