@@ -15,10 +15,46 @@ const CHAT_API_URL = "https://hp-chat.poondlahemanth1.workers.dev";
 // The system prompt lives in the Worker, not here, so a caller can't replace it.
 
 const SUGGESTIONS = [
+  "Walk me through his projects",
   "What did he build at Temenos?",
-  "Ask about RAG & LangGraph",
-  "Why hire him for GenAI?",
+  "Can I get his résumé?",
 ];
+
+const RESUME_URL = "/resume.pdf";
+
+// Turn markdown links and bare URLs in a reply into clickable links — so the
+// résumé link the assistant shares is actually downloadable.
+const LINK_RE = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)|(https?:\/\/[^\s)]+)/g;
+function RichText({ text }: { text: string }) {
+  const nodes: React.ReactNode[] = [];
+  let last = 0;
+  let key = 0;
+  let m: RegExpExecArray | null;
+  LINK_RE.lastIndex = 0;
+  while ((m = LINK_RE.exec(text)) !== null) {
+    if (m.index > last) nodes.push(text.slice(last, m.index));
+    const isMd = m[1] != null;
+    let url = isMd ? m[2] : m[3];
+    let trail = "";
+    if (!isMd) {
+      // Don't swallow trailing sentence punctuation into the URL.
+      const t = url.match(/[.,;:!?)]+$/);
+      if (t) { trail = t[0]; url = url.slice(0, url.length - trail.length); }
+    }
+    const label = isMd ? m[1] : url;
+    const isPdf = /\.pdf($|[?#])/i.test(url);
+    nodes.push(
+      <a key={key++} href={url} target="_blank" rel="noopener noreferrer" download={isPdf ? "" : undefined}
+        style={{ color: "var(--accent)", fontWeight: 600, textDecoration: "underline", wordBreak: "break-word" }}>
+        {label}
+      </a>
+    );
+    if (trail) nodes.push(trail);
+    last = LINK_RE.lastIndex;
+  }
+  if (last < text.length) nodes.push(text.slice(last));
+  return <>{nodes}</>;
+}
 
 /** Small HP monogram avatar — branded, not a generic robot. */
 function Avatar({ size = 36 }: { size?: number }) {
@@ -50,7 +86,7 @@ export function ChatBot() {
     return !hasBeenClosed && isDesktop && !onContact;
   });
   const [messages, setMessages] = useState<Message[]>([
-    { role: "assistant", content: "Hi — I'm Hemanth's portfolio assistant. Ask me about his GenAI work, the products he's shipped, or what he did at Temenos." },
+    { role: "assistant", content: "Hi — I'm Hemanth's portfolio assistant. Ask me about his GenAI work, any of his projects, his experience at Temenos — or grab his résumé." },
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -171,6 +207,17 @@ export function ChatBot() {
                 trained on his real work
               </p>
             </div>
+            {/* Always-available résumé, regardless of how the assistant phrases things */}
+            <a
+              href={RESUME_URL}
+              download="Hemanth_Poondla_Resume.pdf"
+              className="mono"
+              aria-label="Download Hemanth's résumé (PDF)"
+              style={{ flexShrink: 0, display: "inline-flex", alignItems: "center", gap: 6, padding: "6px 11px", borderRadius: 999, border: "1px solid var(--border-strong)", background: "rgba(139,125,255,0.1)", color: "var(--accent)", fontSize: 11, fontWeight: 500, textDecoration: "none" }}
+            >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden="true"><path d="M12 3v13M7 11l5 5 5-5M5 21h14" /></svg>
+              Résumé
+            </a>
           </div>
 
           {/* Messages */}
@@ -193,7 +240,7 @@ export function ChatBot() {
                     boxShadow: msg.role === "user" ? "0 8px 20px -12px rgba(139,125,255,0.9)" : "none",
                   }}
                 >
-                  {msg.content}
+                  {msg.role === "assistant" ? <RichText text={msg.content} /> : msg.content}
                 </div>
               </div>
             ))}
