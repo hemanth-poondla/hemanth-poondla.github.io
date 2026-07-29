@@ -209,19 +209,24 @@ export default {
       if (content.length > MAX_CHARS_PER_MESSAGE) {
         return json({ error: ERRORS.tooLong }, 400, origin);
       }
-      // Only screen what the visitor typed — the assistant's own replies come back
-      // as history and must never be able to trip a filter meant for user input.
-      if (role === "user") {
-        const blocked = blockedReason(content);
-        if (blocked) {
-          return json({ error: blocked }, 400, origin);
-        }
-      }
       total += content.length;
       messages.push({ role, content });
     }
     if (total > MAX_TOTAL_CHARS) {
       return json({ error: ERRORS.chatTooLong }, 400, origin);
+    }
+
+    // Screen only the turn being submitted. Earlier turns were already screened
+    // when they were sent, and re-screening them traps the session on its first
+    // offender — including every legitimate question that follows it. The role
+    // guard keeps the assistant's own replies, replayed as history, from tripping
+    // a filter meant for user input.
+    const current = messages[messages.length - 1];
+    if (current?.role === "user") {
+      const blocked = blockedReason(current.content);
+      if (blocked) {
+        return json({ error: blocked }, 400, origin);
+      }
     }
 
     try {

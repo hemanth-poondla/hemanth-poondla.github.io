@@ -4,6 +4,8 @@ import { MessageCircle, X, Send } from "lucide-react";
 interface Message {
   role: "user" | "assistant";
   content: string;
+  /** Rejected by the Worker — stays in the transcript, never replayed upstream. */
+  excluded?: boolean;
 }
 
 /**
@@ -117,7 +119,7 @@ export function ChatBot() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           messages: [
-            ...messages.map((m) => ({ role: m.role, content: m.content })),
+            ...messages.filter((m) => !m.excluded).map((m) => ({ role: m.role, content: m.content })),
             { role: "user", content: userMessage },
           ],
         }),
@@ -129,14 +131,29 @@ export function ChatBot() {
         console.error("Chat proxy error:", { status: response.status, data });
         // The Worker owns this copy — only fall back if there was no JSON body at all.
         const fallback = data?.error || "That one got away from me. Try again?";
-        setMessages((prev) => [...prev, { role: "assistant", content: fallback }]);
+        // A 400 means the Worker rejected the content of that turn, so drop it from
+        // the replayed history — left in, it re-trips the filter on every later send
+        // and traps the session. A 429/500/502 is a service failure and the question
+        // itself was fine, so that turn stays for context on retry.
+        const dropTurn = response.status === 400;
+        setMessages((prev) => {
+          const last = prev.map((m) => m.role).lastIndexOf("user");
+          const kept =
+            dropTurn && last !== -1
+              ? prev.map((m, i) => (i === last ? { ...m, excluded: true } : m))
+              : prev;
+          return [...kept, { role: "assistant", content: fallback, excluded: true }];
+        });
         return;
       }
 
       setMessages((prev) => [...prev, { role: "assistant", content: data.reply }]);
     } catch (error) {
       console.error("Chat error:", error);
-      setMessages((prev) => [...prev, { role: "assistant", content: "Can't reach me from here. Check your connection?" }]);
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: "Can't reach me from here. Check your connection?", excluded: true },
+      ]);
     } finally {
       setIsLoading(false);
     }
@@ -146,7 +163,7 @@ export function ChatBot() {
   const refuseAttachment = () => {
     setMessages((prev) => [
       ...prev,
-      { role: "assistant", content: "Nice try, mate — no files or screenshots here. Words only." },
+      { role: "assistant", content: "Nice try, mate — no files or screenshots here. Words only.", excluded: true },
     ]);
   };
 
