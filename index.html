@@ -23,8 +23,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <!-- Share card: public/og.png, generated from tools/og-card.html. Absolute
-         URLs are required — scrapers do not resolve relative paths. -->
+    <!-- Share card. Absolute URLs are required — scrapers do not resolve relative
+         paths. The file must live in public/, not src/assets/: Vite only emits
+         src/assets files that app code imports, so an OG image there would 404.
+         Link previews have no light/dark switching, so og.png (dark) is the one
+         that ships; og-light.png is the alternate — swap the two URLs below to
+         use it. -->
     <meta property="og:site_name" content="Hemanth Poondla" />
     <meta property="og:title" content="Hemanth Poondla | AI/GenAI Engineer" />
     <meta property="og:description" content="AI/GenAI Engineer building applied LLM products - RAG, LangChain agents, and OpenAI API integrations - on 7 years of full-stack engineering." />
@@ -34,13 +38,13 @@
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:type" content="image/png" />
-    <meta property="og:image:alt" content="Hemanth Poondla, AI/GenAI Engineer - I build GenAI with a banking engineer's definition of working." />
+    <meta property="og:image:alt" content="Hemanth Poondla - AI/GenAI Engineer. OpenAI, LangChain, LangGraph, RAG, MCP, FastAPI. hemanth-poondla.github.io" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Hemanth Poondla | AI/GenAI Engineer" />
     <meta name="twitter:description" content="Applied AI/GenAI Engineer - RAG, LangChain, and OpenAI API - backed by 7 years shipping products." />
     <meta name="twitter:image" content="https://hemanth-poondla.github.io/og.png" />
-    <meta name="twitter:image:alt" content="Hemanth Poondla, AI/GenAI Engineer - I build GenAI with a banking engineer's definition of working." />
+    <meta name="twitter:image:alt" content="Hemanth Poondla - AI/GenAI Engineer. OpenAI, LangChain, LangGraph, RAG, MCP, FastAPI. hemanth-poondla.github.io" />
   </head>
 
   <body>
