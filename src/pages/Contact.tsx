@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { Layout } from "@/components/layout/Layout";
+import { BookingCard } from "@/components/BookingCard";
 import { useToast } from "@/hooks/use-toast";
 import profileImage from "@/assets/profile.webp";
 
@@ -280,6 +281,7 @@ const Contact = () => {
               <span style={{ fontSize: 14, fontWeight: 600 }}>Available for work</span>
             </div>
             <p style={{ fontSize: 13.5, color: "var(--mute)", margin: 0 }}>Open to GenAI engineering roles, remote or Hyderabad.</p>
+            <BookingCard />
           </div>
         </div>
       </section>
