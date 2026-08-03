@@ -34,6 +34,20 @@ const projects: Project[] = [
     tech: ["React", "TypeScript", "Supabase", "LLM", "Framer Motion"], liveUrl: "https://finx.werde.app/", screenshot: finxShot,
   },
   {
+    title: "Settle", subtitle: "Group expenses, sorted — and agent-accessible", endpoint: "settle.werde.app", slotId: "p-settle",
+    description: "A Splitwise alternative with more of the features people actually ask for — and the first of my products to ship its own MCP server, so Claude and ChatGPT can read balances and log expenses on your behalf.",
+    features: ["MCP server live in Claude & ChatGPT", "14 read tools, 3 deliberately narrow write tools", "OAuth-scoped to only the groups you're in", "Guided add-expense that previews before it writes", "Flexible bill splitting (equal, shares, exact)", "Automatic balance calculations and settle-up flow"],
+    signals: ["MCP server + OAuth", "Multi-party balances", "Settle-up flow"],
+    tech: ["React", "TypeScript", "Supabase", "MCP", "OAuth", "Edge Functions"], liveUrl: "https://settle.werde.app/", screenshot: settleShot,
+  },
+  {
+    title: "mywayaround", subtitle: "Full-stack travel journal", endpoint: "mywayaround.blog", slotId: "p-mwa",
+    description: "A complete, live travel-journal product — auth, newsletter, a content Studio and a '5 questions to your matched trip' planning quiz, all on a Supabase backend. A strong end-to-end full-stack proof point.",
+    features: ["Auth, newsletter and a content Studio", "“5 questions → matched trip” planning quiz", "Supabase backend with real content", "Its own MCP server is in progress"],
+    signals: ["Full-stack + auth", "Content Studio", "Trip-matching quiz"],
+    tech: ["React", "Supabase", "Auth", "TypeScript"], liveUrl: "https://mywayaround.blog/", noEmbed: true, screenshot: mywayaroundShot,
+  },
+  {
     title: "Trip Captain", subtitle: "OpenAI-powered trip planning", endpoint: "tripcaptain.werde.app", slotId: "p-trip",
     description: "An intelligent travel-planning platform built directly on the OpenAI API. Enter your preferences, budget and dates to get a comprehensive itinerary — accommodations, activities and local gems included.",
     features: ["AI itinerary generation via the OpenAI API", "Real-time collaboration for group trips", "Smart budget optimization", "Weather-aware planning & local recommendations"],
@@ -41,31 +55,17 @@ const projects: Project[] = [
     tech: ["React", "TypeScript", "Supabase", "OpenAI API", "Framer Motion"], liveUrl: "https://tripcaptain.werde.app/", screenshot: tripCaptainShot,
   },
   {
-    title: "Wardrobe by werde", subtitle: "AI styling assistant", endpoint: "wardrobe.werde.app", slotId: "p-wardrobe",
+    title: "Wardrobe", subtitle: "AI styling assistant", endpoint: "wardrobe.werde.app", slotId: "p-wardrobe",
     description: "A styling app that digitizes your wardrobe and generates AI outfit recommendations by weather, occasion and personal taste — learning from your choices to get more personal over time.",
     features: ["Digital wardrobe organization", "AI/ML outfit recommendations", "Weather & occasion-based styling", "Style analytics and insights"],
     signals: ["AI/ML recommendations", "Learns your taste", "Image-heavy UI"],
     tech: ["React", "TypeScript", "Supabase", "AI/ML", "Framer Motion"], liveUrl: "https://wardrobe.werde.app/",
   },
-  {
-    title: "Settle by werde", subtitle: "Group expenses, sorted", endpoint: "settle.werde.app", slotId: "p-settle",
-    description: "A Splitwise alternative with more of the features people actually ask for. Split dinners, rent or group travel effortlessly, with automatic balance calculations and a clean settle-up flow.",
-    features: ["Flexible bill splitting (equal, shares, exact)", "Automatic balance calculations", "Group expense management", "Settlement history and reminders"],
-    signals: ["Multi-party balances", "Multi-currency", "Settle-up flow"],
-    tech: ["React", "TypeScript", "Supabase", "Framer Motion"], liveUrl: "https://settle.werde.app/", screenshot: settleShot,
-  },
-  {
-    title: "mywayaround", subtitle: "Full-stack travel journal", endpoint: "mywayaround.blog", slotId: "p-mwa",
-    description: "A complete, live travel-journal product — auth, newsletter, a content Studio and a '5 questions to your matched trip' planning quiz, all on a Supabase backend. A strong end-to-end full-stack proof point.",
-    features: ["Auth, newsletter and a content Studio", "“5 questions → matched trip” planning quiz", "Supabase backend with real content", "Candidate for an embeddings-based upgrade"],
-    signals: ["Full-stack + auth", "Content Studio", "Trip-matching quiz"],
-    tech: ["React", "Supabase", "Auth", "TypeScript"], liveUrl: "https://mywayaround.blog/", noEmbed: true, screenshot: mywayaroundShot,
-  },
 ];
 
 const building = [
   { title: "Document RAG Assistant", status: "in progress", eta: "Q4 2026", description: "Retrieval assistant over my travel-research corpus — chunking, embeddings and vector search with cited answers.", tech: ["RAG", "Embeddings", "Vector DB"] },
-  { title: "MCP Tool Server", status: "in progress", eta: "Q4 2026", description: "Read-only MCP tools over real FinX / Settle data — expense lookups and balance checks exposed to any agent.", tech: ["MCP", "Connectors"] },
+  { title: "Blog MCP Server", status: "in progress", eta: "Aug 2026", description: "A second MCP server, this one over the travel journal — list, fetch and search posts, plus blog analytics, read-only for any agent.", tech: ["MCP", "Supabase"] },
   { title: "Agentic Trip Planner", status: "designing", eta: "Q1 2027", description: "A LangGraph agent chaining the RAG assistant and MCP tools into a structured, budget-aware trip proposal.", tech: ["LangGraph", "RAG", "MCP"] },
 ];
 

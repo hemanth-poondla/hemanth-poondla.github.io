@@ -53,7 +53,7 @@ const NODES: NodeDef[] = [
   {
     id: "tools", label: "Tools", sub: "MCP", x: 372, y: 151, w: 94, h: 34,
     path: "M80,168 L419,168",
-    desc: "MCP tools expose real data — FinX expenses, Settle balances — so the agent acts on facts, not guesses.",
+    desc: "MCP tools expose real data — my Settle server hands an agent live balances, expenses and analytics — so it acts on facts, not guesses.",
   },
   {
     id: "response", label: "Response", x: 296, y: 305, w: 108, h: 34,

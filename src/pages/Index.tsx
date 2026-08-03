@@ -7,7 +7,7 @@ import profileImage from "@/assets/profile.webp";
 const techStack = ["OpenAI", "LangChain", "LangGraph", "RAG", "MCP", "Pinecone", "PyTorch", "FastAPI"];
 const ragFlow = ["Query", "Embed", "Retriever", "Vector DB", "Re-ranker", "LLM"];
 const agentWorkers = ["Destination research", "Budget math", "Itinerary check"];
-const mcpTools = ["FinX expenses", "Settle balances", "Gmail", "Supabase"];
+const mcpTools = ["list_groups", "get_group_balances", "add_expense", "get_spending_analytics"];
 
 const stats = [
   { value: "6+", label: "years engineering" },
@@ -16,10 +16,19 @@ const stats = [
   { value: "#1", label: "internal UX redesign" },
 ];
 
-const products = [
+interface Product {
+  title: string;
+  endpoint: string;
+  description: string;
+  url: string;
+  /** Optional qualifier beside the live pill — where else the product is reachable. */
+  badge?: string;
+}
+
+const products: Product[] = [
   { title: "FinX", endpoint: "finx.werde.app", description: "AI finance tracker — an LLM auto-categorizes expenses straight from Gmail & SMS.", url: "https://finx.werde.app/" },
-  { title: "Trip Captain", endpoint: "tripcaptain.werde.app", description: "Itinerary generator built on the OpenAI API, with live group collaboration.", url: "https://tripcaptain.werde.app/" },
-  { title: "Settle by werde", endpoint: "settle.werde.app", description: "Split shared expenses and settle up — a sharper Splitwise.", url: "https://settle.werde.app/" },
+  { title: "Settle", endpoint: "settle.werde.app", description: "Split shared expenses and settle up — plus an MCP server that hands 17 OAuth-scoped tools to any agent.", url: "https://settle.werde.app/", badge: "in Claude & ChatGPT" },
+  { title: "mywayaround", endpoint: "mywayaround.blog", description: "A full-stack travel journal on Supabase — auth, newsletter, a content Studio and a trip-matching quiz.", url: "https://mywayaround.blog/" },
 ];
 
 const sec: React.CSSProperties = { maxWidth: 1180, margin: "0 auto" };
@@ -136,7 +145,7 @@ const Index = () => {
             <h2 style={h2Style}>Systems I architect</h2>
           </div>
           <p style={{ fontSize: 16, color: "var(--mute)", margin: "0 0 24px", maxWidth: 660 }}>
-            Not textbook diagrams — these are the patterns behind my own builds: the docs assistant at Temenos, the FinX categorizer, and the trip-planning agent.
+            Not textbook diagrams — these are the patterns behind my own builds: the docs assistant at Temenos, the trip-planning agent, and the MCP server running live behind Settle.
           </p>
           <div className="g3" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 16 }}>
             <div className="hover-card" style={archCard}>
@@ -176,10 +185,12 @@ const Index = () => {
 
             <div className="hover-card" style={archCard}>
               <h3 style={{ fontFamily: sora, fontSize: 16, fontWeight: 600, margin: "0 0 4px" }}>MCP Server</h3>
-              <p className="mono" style={{ fontSize: 11, color: "var(--faint)", margin: "0 0 18px" }}>tools over the Model Context Protocol</p>
+              <p className="mono" style={{ fontSize: 11, color: "var(--faint)", margin: "0 0 18px" }}>shipped — live behind Settle</p>
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
                   <span className="mono" style={archChip}>AI Agent</span>
+                  <span style={{ color: "var(--faint)", fontSize: 12 }}>→</span>
+                  <span className="mono" style={archChip}>OAuth</span>
                   <span style={{ color: "var(--faint)", fontSize: 12 }}>→</span>
                   <span className="mono" style={archChipAccent}>MCP Server</span>
                 </div>
@@ -191,11 +202,11 @@ const Index = () => {
                 className="mono"
                 style={{ margin: "14px 0 0", padding: "10px 12px", background: "var(--surface2)", border: "1px solid var(--border)", borderRadius: 10, fontSize: 10.5, color: "var(--dim)", overflowX: "auto", lineHeight: 1.5 }}
               >{`{
-  "name": "get_expenses",
-  "description": "Read-only FinX lookup",
-  "input": { "month": "2026-07" }
+  "name": "add_expense",
+  "description": "Create an expense in a group you belong to",
+  "input": { "group_id": "…", "confirm": true }
 }`}</pre>
-              <p style={{ fontSize: 13.5, color: "var(--mute)", lineHeight: 1.6, margin: "14px 0 0" }}>My MCP server exposes real FinX and Settle data — expense lookups, balances — to any agent.</p>
+              <p style={{ fontSize: 13.5, color: "var(--mute)", lineHeight: 1.6, margin: "14px 0 0" }}>Live in Claude and ChatGPT: 14 read tools and 3 deliberately narrow write tools, OAuth-scoped so an agent only ever sees the groups you're actually in.</p>
             </div>
           </div>
         </section>
@@ -213,12 +224,17 @@ const Index = () => {
         <div className="products" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 16 }}>
           {products.map((p) => (
             <a key={p.title} href={p.url} target="_blank" rel="noopener noreferrer" className="hover-card" style={{ display: "flex", flexDirection: "column", border: "1px solid var(--border)", borderRadius: 18, background: "var(--surface)", padding: 24, minHeight: 180 }}>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
-                <span className="mono" style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "5px 11px", border: "1px solid var(--border)", borderRadius: 999 }}>
-                  <span style={{ width: 7, height: 7, borderRadius: 999, background: "var(--signal)", animation: "livePulse 2.4s ease-in-out infinite" }} />
-                  <span style={{ fontSize: 11, color: "var(--signal)" }}>live</span>
-                </span>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--faint)" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><path d="M15 3h6v6M10 14 21 3" /></svg>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, marginBottom: 16 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 7, flexWrap: "wrap", minWidth: 0 }}>
+                  <span className="mono" style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "5px 11px", border: "1px solid var(--border)", borderRadius: 999 }}>
+                    <span style={{ width: 7, height: 7, borderRadius: 999, background: "var(--signal)", animation: "livePulse 2.4s ease-in-out infinite" }} />
+                    <span style={{ fontSize: 11, color: "var(--signal)" }}>live</span>
+                  </span>
+                  {p.badge && (
+                    <span className="mono" style={{ padding: "5px 11px", border: "1px solid var(--border)", borderRadius: 999, background: "var(--surface2)", fontSize: 11, color: "var(--dim)" }}>{p.badge}</span>
+                  )}
+                </div>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--faint)" strokeWidth="2" style={{ flexShrink: 0 }}><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><path d="M15 3h6v6M10 14 21 3" /></svg>
               </div>
               <h3 style={{ fontFamily: sora, fontSize: 20, fontWeight: 600, margin: "0 0 4px" }}>{p.title}</h3>
               <p className="mono" style={{ fontSize: 11.5, color: "var(--accent)", margin: "0 0 12px" }}>{p.endpoint}</p>
@@ -236,7 +252,7 @@ const Index = () => {
             <span className="mono" style={{ fontSize: 12.5, color: "#c99a3a" }}>building now</span>
           </div>
           <p style={{ fontSize: 15.5, color: "var(--dim)", margin: 0, flex: 1, minWidth: 260, lineHeight: 1.55 }}>
-            A <strong style={{ color: "var(--text)" }}>RAG doc assistant</strong>, an <strong style={{ color: "var(--text)" }}>MCP tool server</strong> over real FinX data, and a <strong style={{ color: "var(--text)" }}>LangGraph trip-planning agent</strong> — see the roadmap on the projects page.
+            A <strong style={{ color: "var(--text)" }}>RAG doc assistant</strong>, a second <strong style={{ color: "var(--text)" }}>MCP server</strong> over my travel journal, and a <strong style={{ color: "var(--text)" }}>LangGraph trip-planning agent</strong> — see the roadmap on the projects page.
           </p>
           <Link to="/projects" className="mono" style={{ fontSize: 13, color: "#c99a3a", whiteSpace: "nowrap" }}>view roadmap →</Link>
         </div>

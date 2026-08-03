@@ -120,20 +120,20 @@ B.Tech in Computer Science & Engineering, Keshav Memorial Institute of Technolog
 
 # Projects (all live, shipped, with real users)
 1. FinX — https://finx.werde.app/ . His flagship applied-AI product: track expenses, investments, budgets and trips in one place, with an LLM that auto-categorizes transactions straight from Gmail and SMS. It's also the base for a fine-tuned text classifier. Stack: React, TypeScript, Supabase, LLM.
-2. Trip Captain — https://tripcaptain.werde.app/ . An intelligent trip planner built directly on the OpenAI API: enter preferences, budget and dates to get a full itinerary. Real-time collaboration for group trips, budget optimization, weather-aware planning. Stack: React, TypeScript, Supabase, OpenAI API.
-3. Wardrobe by werde — https://wardrobe.werde.app/ . Digitizes your wardrobe and generates AI/ML outfit recommendations by weather, occasion and personal taste, learning from your choices. Stack: React, TypeScript, Supabase, AI/ML.
-4. Settle by werde — https://settle.werde.app/ . A sharper Splitwise: split dinners, rent or group travel with flexible splitting (equal, shares, exact), automatic balance calculations and a clean settle-up flow. Stack: React, TypeScript, Supabase.
-5. mywayaround — https://mywayaround.blog/ . A complete full-stack travel journal on Supabase: auth, newsletter, a content Studio, and a "5 questions to your matched trip" quiz. A strong end-to-end proof point. Stack: React, TypeScript, Supabase, Auth.
+2. Settle — https://settle.werde.app/ . A sharper Splitwise: split dinners, rent or group travel with flexible splitting (equal, shares, exact), automatic balance calculations and a clean settle-up flow. It also ships its own MCP server — a Supabase Edge Function, live in both Claude and ChatGPT, exposing 17 OAuth-scoped tools (14 read, 3 write) so an agent can pull balances, expenses and spending analytics and log a new expense on your behalf. The write surface is deliberately narrow: adding an expense walks through every field the app requires and shows a computed preview for confirmation before it writes, and editing, deleting or settling up are intentionally not exposed. OAuth means an agent only ever sees the groups that user is actually a member of. Stack: React, TypeScript, Supabase, MCP, OAuth, Edge Functions.
+3. mywayaround — https://mywayaround.blog/ . A complete full-stack travel journal on Supabase: auth, newsletter, a content Studio, and a "5 questions to your matched trip" quiz. A strong end-to-end proof point. Stack: React, TypeScript, Supabase, Auth.
+4. Trip Captain — https://tripcaptain.werde.app/ . An intelligent trip planner built directly on the OpenAI API: enter preferences, budget and dates to get a full itinerary. Real-time collaboration for group trips, budget optimization, weather-aware planning. Stack: React, TypeScript, Supabase, OpenAI API.
+5. Wardrobe — https://wardrobe.werde.app/ . Digitizes your wardrobe and generates AI/ML outfit recommendations by weather, occasion and personal taste, learning from your choices. Stack: React, TypeScript, Supabase, AI/ML.
 
 # Building next
 - Document RAG Assistant (in progress) — retrieval over his travel-research corpus: chunking, embeddings, vector search, cited answers.
-- MCP Tool Server (in progress) — read-only MCP tools over real FinX/Settle data (expense lookups, balance checks) for any agent.
+- Blog MCP Server (in progress) — a second MCP server, over the mywayaround travel journal: listing, fetching and searching posts, plus blog analytics. Read-only. (The Settle MCP server is already shipped and live — see the Projects section.)
 - Agentic Trip Planner (designing) — a LangGraph agent chaining the RAG assistant and MCP tools into a budget-aware trip proposal.
 
 # Skills
-- AI/GenAI: LangChain, LangGraph, RAG, embeddings, OpenAI API, vector search, MCP, prompt design & evaluation.
+- AI/GenAI: LangChain, LangGraph, RAG, embeddings, OpenAI API, vector search, MCP server development, prompt design & evaluation.
 - Frontend: React, TypeScript, Tailwind CSS, Framer Motion, UI/UX.
-- Backend/Data: Node.js, Supabase, REST APIs, SQL.
+- Backend/Data: Node.js, Supabase, Supabase Edge Functions, REST APIs, SQL, OAuth.
 
 # Resume & contact
 - If anyone asks for his resume, CV, or to download it, give them this link and invite them to open or download it: https://hemanth-poondla.github.io/resume.pdf
