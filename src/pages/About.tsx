@@ -15,7 +15,7 @@ const interests = [
   { emoji: "♟️", title: "Chess", desc: "Elite league player. Strategy is my playground." },
   { emoji: "🏏", title: "Cricket", desc: "Former college captain. Weekend warrior." },
   { emoji: "🎵", title: "Music", desc: "Diverse genres keep me in the zone." },
-  { emoji: "✈️", title: "Travel", desc: "50+ places explored and counting." },
+  { emoji: "✈️", title: "Travel", desc: "80 places across 6 countries." },
   { emoji: "📚", title: "Philosophy", desc: "Traditional values, modern perspective." },
 ];
 
@@ -87,7 +87,7 @@ const About = () => {
         <div style={{ textAlign: "center", marginBottom: 26 }}>
           <span className="mono" style={{ fontSize: 12, color: "var(--accent)" }}>// places.visited</span>
           <h2 style={{ fontFamily: sora, fontSize: 32, fontWeight: 600, letterSpacing: "-0.02em", margin: "10px 0 6px" }}>The Map</h2>
-          <p style={{ fontSize: 15, color: "var(--mute)", margin: 0 }}>60+ places across 5 countries — home base Hyderabad. Click a marker.</p>
+          <p style={{ fontSize: 15, color: "var(--mute)", margin: 0 }}>80 places across 6 countries — home base Hyderabad. Click a marker.</p>
         </div>
         <TravelMap />
       </section>

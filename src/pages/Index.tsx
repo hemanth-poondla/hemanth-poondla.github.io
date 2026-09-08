@@ -274,13 +274,13 @@ const Index = () => {
         <div className="offduty" style={{ display: "grid", gridTemplateColumns: "1.2fr auto", gap: 28, alignItems: "center" }}>
           <div>
             <span className="mono" style={sectionLabel}>// off.duty</span>
-            <h3 style={{ fontFamily: sora, fontSize: 25, fontWeight: 600, letterSpacing: "-0.01em", margin: "10px 0 8px" }}>60+ places mapped — and quietly turned into training data</h3>
+            <h3 style={{ fontFamily: sora, fontSize: 25, fontWeight: 600, letterSpacing: "-0.01em", margin: "10px 0 8px" }}>80 places mapped — and quietly turned into training data</h3>
             <p style={{ fontSize: 16, color: "var(--dim)", lineHeight: 1.65, margin: 0, maxWidth: 560 }}>
               My travel journal is also my AI playground: it's the corpus behind the RAG assistant and the trip data behind the LangGraph agent. Chess, cricket and music fill the rest. <Link to="/about" style={{ color: "var(--accent)" }}>More about me + the map →</Link>
             </p>
           </div>
           <div className="mono offduty-stats" style={{ display: "flex", gap: 26 }}>
-            {[{ v: "60+", l: "places" }, { v: "2×", l: "chess champ" }, { v: "1", l: "travel blog" }].map((x) => (
+            {[{ v: "80", l: "places" }, { v: "2×", l: "chess champ" }, { v: "1", l: "travel blog" }].map((x) => (
               <span key={x.l} style={{ fontSize: 12, color: "var(--mute)", textAlign: "center" }}>
                 <span style={{ display: "block", fontFamily: sora, fontSize: 30, fontWeight: 700, color: "var(--text)" }}>{x.v}</span>{x.l}
               </span>

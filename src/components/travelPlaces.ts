@@ -12,9 +12,10 @@ export const countryColors: Record<string, string> = {
   UAE: "#3b82f6",
   Oman: "#a855f7",
   "South Africa": "#eab308",
+  Kazakhstan: "#06b6d4",
 };
 
-export const countries = ["India", "Sri Lanka", "UAE", "Oman", "South Africa"];
+export const countries = ["India", "Sri Lanka", "UAE", "Oman", "South Africa", "Kazakhstan"];
 
 export const places: Place[] = [
   { name: "Delhi", region: "Delhi", country: "India", coordinates: [77.209, 28.6139] },
@@ -78,4 +79,22 @@ export const places: Place[] = [
   { name: "Gansbaai", region: "Western Cape", country: "South Africa", coordinates: [19.3508, -34.5803] },
   { name: "Hermanus", region: "Western Cape", country: "South Africa", coordinates: [19.2345, -34.4187] },
   { name: "Cape Town", region: "Western Cape", country: "South Africa", coordinates: [18.4241, -33.9249] },
+  { name: "Almaty", region: "Almaty", country: "Kazakhstan", coordinates: [76.8897, 43.238] },
+  { name: "Shymbulak", region: "Almaty", country: "Kazakhstan", coordinates: [77.0783, 43.1289] },
+  { name: "Big Almaty Lake", region: "Almaty", country: "Kazakhstan", coordinates: [76.9856, 43.0533] },
+  { name: "Assy Plateau", region: "Almaty Region", country: "Kazakhstan", coordinates: [77.8817, 43.2261] },
+  { name: "Saty", region: "Almaty Region", country: "Kazakhstan", coordinates: [78.3208, 43.0708] },
+  { name: "Kolsai Lakes", region: "Almaty Region", country: "Kazakhstan", coordinates: [78.3244, 42.9436] },
+  { name: "Kaindy Lake", region: "Almaty Region", country: "Kazakhstan", coordinates: [78.4661, 42.9847] },
+  { name: "Charyn Canyon", region: "Almaty Region", country: "Kazakhstan", coordinates: [79.0783, 43.3517] },
+  { name: "Moon Canyon", region: "Almaty Region", country: "Kazakhstan", coordinates: [79.13, 43.42] },
+  { name: "Black Canyon", region: "Almaty Region", country: "Kazakhstan", coordinates: [79.19, 43.51] },
+  { name: "Aktau", region: "Mangystau", country: "Kazakhstan", coordinates: [51.1801, 43.6525] },
+  { name: "Torysh", region: "Mangystau", country: "Kazakhstan", coordinates: [51.9, 44.28] },
+  { name: "Sherkala", region: "Mangystau", country: "Kazakhstan", coordinates: [52.0061, 44.2564] },
+  { name: "Airakty", region: "Mangystau", country: "Kazakhstan", coordinates: [52.0896, 44.2421] },
+  { name: "Tuzbair", region: "Mangystau", country: "Kazakhstan", coordinates: [53.2272, 44.0103] },
+  { name: "Kyzylkup", region: "Mangystau", country: "Kazakhstan", coordinates: [53.795, 43.485] },
+  { name: "Bokty", region: "Mangystau", country: "Kazakhstan", coordinates: [53.7992, 43.4219] },
+  { name: "Bozjyra", region: "Mangystau", country: "Kazakhstan", coordinates: [54.0719, 43.4156] },
 ];

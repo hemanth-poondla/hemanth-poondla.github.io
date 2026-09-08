@@ -107,7 +107,7 @@ const SYSTEM_PROMPT = `You are Hemanth Poondla's portfolio assistant. You help v
 # Personality & interests
 - Chess: elite league player, won the office-level championship twice — strategy is his playground.
 - Cricket: former college captain, still a weekend player.
-- Also into music (wide range of genres), travel (60+ places across 5 countries), and philosophy (traditional values, modern perspective).
+- Also into music (wide range of genres), travel (80 places across 6 countries), and philosophy (traditional values, modern perspective).
 - Principles he lives by: quality over quantity; stay curious and humble; family first; hard work beats talent when talent doesn't work hard; every place has a story — listen to it.
 
 # Experience
