@@ -43,6 +43,8 @@ export const places: Place[] = [
   { name: "Coorg", region: "Karnataka", country: "India", coordinates: [75.8069, 12.3375] },
   { name: "Goa", region: "Goa", country: "India", coordinates: [74.124, 15.2993] },
   { name: "Alleppey", region: "Kerala", country: "India", coordinates: [76.3388, 9.4981] },
+  { name: "Kochi", region: "Kerala", country: "India", coordinates: [76.2673, 9.9312] },
+  { name: "Guruvayur", region: "Kerala", country: "India", coordinates: [76.0408, 10.5944] },
   { name: "Wayanad", region: "Kerala", country: "India", coordinates: [76.132, 11.6854] },
   { name: "Munnar", region: "Kerala", country: "India", coordinates: [77.0595, 10.0889] },
   { name: "Tirupati", region: "Andhra Pradesh", country: "India", coordinates: [79.4192, 13.6288] },
