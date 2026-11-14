@@ -10,7 +10,7 @@ const photoFor = (country: string) =>
   Object.entries(photoModules).find(([path]) => path.endsWith(`/${slug(country)}.jpg`))?.[1];
 
 // Portrait shots sit in wide tiles, so pick which band of the photo stays visible.
-const focus: Record<string, string> = { India: "50% 48%", "South Africa": "50% 22%" };
+const focus: Record<string, string> = { India: "50% 48%", "South Africa": "50% 22%", UAE: "50% 40%" };
 
 const ranked = countries
   .map((c) => ({ country: c, count: places.filter((p) => p.country === c).length }))
