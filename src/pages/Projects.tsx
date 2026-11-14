@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { Layout } from "@/components/layout/Layout";
+import { building } from "@/data/roadmap";
 import finxShot from "@/assets/projects/finx.webp";
 import tripCaptainShot from "@/assets/projects/tripcaptain.webp";
 import settleShot from "@/assets/projects/settle.webp";
@@ -61,12 +62,6 @@ const projects: Project[] = [
     signals: ["AI/ML recommendations", "Learns your taste", "Image-heavy UI"],
     tech: ["React", "TypeScript", "Supabase", "AI/ML", "Framer Motion"], liveUrl: "https://wardrobe.werde.app/",
   },
-];
-
-const building = [
-  { title: "Document RAG Assistant", status: "in progress", eta: "Q4 2026", description: "Retrieval assistant over my travel-research corpus — chunking, embeddings and vector search with cited answers.", tech: ["RAG", "Embeddings", "Vector DB"] },
-  { title: "Blog MCP Server", status: "in progress", eta: "Aug 2026", description: "A second MCP server, this one over the travel journal — list, fetch and search posts, plus blog analytics, read-only for any agent.", tech: ["MCP", "Supabase"] },
-  { title: "Agentic Trip Planner", status: "designing", eta: "Q1 2027", description: "A LangGraph agent chaining the RAG assistant and MCP tools into a structured, budget-aware trip proposal.", tech: ["LangGraph", "RAG", "MCP"] },
 ];
 
 /** Virtual desktop viewport the live preview is rendered at, then scaled to fit. */

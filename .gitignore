@@ -35,6 +35,10 @@ casestudy_fix.txt
 # Design mockup the site was built from — kept locally, not shipped
 handoff/
 
+# New-layout source export (reference only; its sections are ported into src/components/home)
+5610dcca-efe2-8bcb-823c-4c737dd2d984-source/
+5610dcca-efe2-8bcb-823c-4c737dd2d984-source.zip
+
 # Resume source files. The published copy is public/resume.pdf
 Hemanth_Poondla_Resume_AI_*.docx
 Hemanth_Poondla_Resume_AI_*.pdf
