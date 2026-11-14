@@ -1,29 +1,35 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { places, countries, countryColors } from "@/components/travelPlaces";
 import { sora, wrap, card, gradAccent } from "./styles";
 
 const slug = (c: string) => c.toLowerCase().replace(/\s+/g, "-");
 
+// Drop `<country-slug>.jpg` (e.g. india.jpg, south-africa.jpg) into src/assets/travel to give a tile a photo.
+const photoModules = import.meta.glob("../../assets/travel/*.jpg", { eager: true, import: "default" }) as Record<string, string>;
+const photoFor = (country: string) =>
+  Object.entries(photoModules).find(([path]) => path.endsWith(`/${slug(country)}.jpg`))?.[1];
+
 const ranked = countries
   .map((c) => ({ country: c, count: places.filter((p) => p.country === c).length }))
   .sort((a, b) => b.count - a.count);
 const max = ranked[0]?.count ?? 1;
 
+// Countries with a photo lead the grid so the large tile is never a bare gradient.
+const tiles = [...ranked].sort((a, b) => Number(!!photoFor(b.country)) - Number(!!photoFor(a.country)));
+
 function Tile({ country, count, big }: { country: string; count: number; big?: boolean }) {
-  const [missing, setMissing] = useState(false);
+  const photo = photoFor(country);
   const color = countryColors[country] ?? "var(--accent)";
   return (
     <figure
       className={big ? "home-tile home-tile-big" : "home-tile"}
       style={{ position: "relative", margin: 0, overflow: "hidden", borderRadius: 16, border: "1px solid var(--border)", background: `linear-gradient(150deg, color-mix(in srgb, ${color} 30%, var(--solid)), var(--solid) 75%)` }}
     >
-      {!missing && (
+      {photo && (
         <img
-          src={`${import.meta.env.BASE_URL}travel/${slug(country)}.webp`}
+          src={photo}
           alt={`${country}, from my travels`}
           loading="lazy"
-          onError={() => setMissing(true)}
           style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
         />
       )}
@@ -68,7 +74,7 @@ export function Travel() {
         </div>
 
         <div className="home-tiles" style={{ marginTop: 44 }}>
-          {ranked.map((r, i) => <Tile key={r.country} country={r.country} count={r.count} big={i === 0} />)}
+          {tiles.map((r, i) => <Tile key={r.country} country={r.country} count={r.count} big={i === 0} />)}
         </div>
       </div>
     </section>
