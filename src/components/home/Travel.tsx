@@ -9,6 +9,9 @@ const photoModules = import.meta.glob("../../assets/travel/*.jpg", { eager: true
 const photoFor = (country: string) =>
   Object.entries(photoModules).find(([path]) => path.endsWith(`/${slug(country)}.jpg`))?.[1];
 
+// Portrait shots sit in wide tiles, so pick which band of the photo stays visible.
+const focus: Record<string, string> = { India: "50% 48%", "South Africa": "50% 22%" };
+
 const ranked = countries
   .map((c) => ({ country: c, count: places.filter((p) => p.country === c).length }))
   .sort((a, b) => b.count - a.count);
@@ -30,7 +33,7 @@ function Tile({ country, count, big }: { country: string; count: number; big?: b
           src={photo}
           alt={`${country}, from my travels`}
           loading="lazy"
-          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: focus[country] ?? "center" }}
         />
       )}
       <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(8,8,12,0.72), transparent 60%)" }} />
