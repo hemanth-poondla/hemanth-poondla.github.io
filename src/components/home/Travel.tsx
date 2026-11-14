@@ -10,7 +10,10 @@ const photoFor = (country: string) =>
   Object.entries(photoModules).find(([path]) => path.endsWith(`/${slug(country)}.jpg`))?.[1];
 
 // Portrait shots sit in wide tiles, so pick which band of the photo stays visible.
-const focus: Record<string, string> = { India: "50% 48%", "South Africa": "50% 22%", UAE: "50% 40%" };
+const focus: Record<string, string> = { India: "50% 48%", UAE: "50% 40%" };
+
+// Photos shown uncropped (letterboxed over a blurred copy of themselves), with the caption below.
+const showWhole = new Set(["South Africa"]);
 
 const ranked = countries
   .map((c) => ({ country: c, count: places.filter((p) => p.country === c).length }))
@@ -20,27 +23,37 @@ const max = ranked[0]?.count ?? 1;
 // Countries with a photo lead the grid so the large tile is never a bare gradient.
 const tiles = [...ranked].sort((a, b) => Number(!!photoFor(b.country)) - Number(!!photoFor(a.country)));
 
-function Tile({ country, count, big }: { country: string; count: number; big?: boolean }) {
+function Tile({ country, count, big, tall }: { country: string; count: number; big?: boolean; tall?: boolean }) {
   const photo = photoFor(country);
+  const whole = !!photo && showWhole.has(country);
   const color = countryColors[country] ?? "var(--accent)";
+  const fill: React.CSSProperties = { position: "absolute", inset: 0, width: "100%", height: "100%" };
+  const caption = (
+    <>
+      <span className="mono" style={{ display: "block", fontSize: 11.5, opacity: 0.85 }}>{count} {count === 1 ? "place" : "places"}</span>
+      <span style={{ display: "block", fontFamily: sora, fontSize: big ? 38 : 22, fontWeight: 700, letterSpacing: "-0.035em", lineHeight: 1.05 }}>{country}</span>
+    </>
+  );
   return (
     <figure
-      className={big ? "home-tile home-tile-big" : "home-tile"}
-      style={{ position: "relative", margin: 0, overflow: "hidden", borderRadius: 16, border: "1px solid var(--border)", background: `linear-gradient(150deg, color-mix(in srgb, ${color} 30%, var(--solid)), var(--solid) 75%)` }}
+      className={["home-tile", big && "home-tile-big", tall && "home-tile-tall", whole && "home-tile-whole"].filter(Boolean).join(" ")}
+      style={{ position: "relative", margin: 0, overflow: "hidden", borderRadius: 16, border: "1px solid var(--border)", display: whole ? "flex" : undefined, flexDirection: "column", background: whole ? "#0b0b10" : `linear-gradient(150deg, color-mix(in srgb, ${color} 30%, var(--solid)), var(--solid) 75%)` }}
     >
-      {photo && (
-        <img
-          src={photo}
-          alt={`${country}, from my travels`}
-          loading="lazy"
-          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: focus[country] ?? "center" }}
-        />
+      {whole ? (
+        <>
+          <div style={{ position: "relative", flex: 1, minHeight: 0, overflow: "hidden" }}>
+            <img src={photo} alt="" aria-hidden loading="lazy" style={{ ...fill, objectFit: "cover", filter: "blur(22px) brightness(0.7)", transform: "scale(1.25)" }} />
+            <img src={photo} alt={`${country}, from my travels`} loading="lazy" style={{ ...fill, objectFit: "contain" }} />
+          </div>
+          <figcaption style={{ padding: "12px 18px 14px", color: "#fff", background: "rgba(8,8,12,0.92)" }}>{caption}</figcaption>
+        </>
+      ) : (
+        <>
+          {photo && <img src={photo} alt={`${country}, from my travels`} loading="lazy" style={{ ...fill, objectFit: "cover", objectPosition: focus[country] ?? "center" }} />}
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(8,8,12,0.72), transparent 60%)" }} />
+          <figcaption style={{ position: "absolute", left: 18, bottom: 16, color: "#fff" }}>{caption}</figcaption>
+        </>
       )}
-      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(8,8,12,0.72), transparent 60%)" }} />
-      <figcaption style={{ position: "absolute", left: 18, bottom: 16, color: "#fff" }}>
-        <span className="mono" style={{ display: "block", fontSize: 11.5, opacity: 0.85 }}>{count} {count === 1 ? "place" : "places"}</span>
-        <span style={{ display: "block", fontFamily: sora, fontSize: big ? 38 : 22, fontWeight: 700, letterSpacing: "-0.035em", lineHeight: 1.05 }}>{country}</span>
-      </figcaption>
     </figure>
   );
 }
@@ -77,7 +90,7 @@ export function Travel() {
         </div>
 
         <div className="home-tiles" style={{ marginTop: 44 }}>
-          {tiles.map((r, i) => <Tile key={r.country} country={r.country} count={r.count} big={i === 0} />)}
+          {tiles.map((r, i) => <Tile key={r.country} country={r.country} count={r.count} big={i === 0} tall={i >= 3} />)}
         </div>
       </div>
     </section>

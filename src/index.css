@@ -332,8 +332,10 @@ svg [role="button"]:focus-visible rect {
 .home-travel-head { display: grid; grid-template-columns: 1.15fr 1fr; gap: 56px; align-items: end; }
 .home-tiles { display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: 200px; gap: 14px; }
 .home-tile-big { grid-column: span 2; grid-row: span 2; }
+.home-tile-tall { grid-row: span 2; }
 .home-tile img { transition: transform 1.2s ease; }
 .home-tile:hover img { transform: scale(1.05); }
+.home-tile-whole:hover img { transform: none; }
 
 @media (max-width: 980px) {
   .home-hero, .home-systems, .home-about, .home-travel-head, .home-feature { grid-template-columns: 1fr; }
@@ -349,6 +351,9 @@ svg [role="button"]:focus-visible rect {
 @media (max-width: 640px) {
   .home-tiles { grid-template-columns: 1fr 1fr; grid-auto-rows: 160px; }
   .home-tile-big { grid-column: span 2; grid-row: span 1; }
+  .home-tiles { grid-auto-rows: 170px; }
+  .home-tile-tall { grid-row: span 2; }
+  .home-tile-tall:last-child { grid-column: span 2; grid-row: span 1; }
   .home-stats { grid-template-columns: 1fr 1fr; }
   .home-stat:nth-child(odd) { border-left: none !important; }
   .home-stat:nth-child(n + 3) { border-top: 1px solid var(--border); }
