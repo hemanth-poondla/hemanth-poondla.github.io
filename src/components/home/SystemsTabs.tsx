@@ -86,7 +86,7 @@ export function SystemsTabs() {
             {active === "rag" && (
               <div className="fu">
                 <p className="mono" style={{ margin: 0, fontSize: 11.5, color: "var(--mute)" }}>Used in · Temenos docs assistant · travel corpus assistant</p>
-                <h3 style={{ fontFamily: sora, fontSize: 32, fontWeight: 700, letterSpacing: "-0.03em", margin: "10px 0 0" }}>Retrieval-augmented generation</h3>
+                <h3 style={{ fontFamily: sora, fontSize: 26, fontWeight: 700, letterSpacing: "-0.03em", margin: "10px 0 0" }}>Retrieval-augmented generation</h3>
                 <Flow items={["Query", "Embed", "Retriever", "Vector DB", "Re-ranker", "LLM", "Cited response"]} accentAt={[3, 5, 6]} />
                 <Notes notes={[
                   { k: "01 · chunking", v: "Semantic chunks sized to the doc, not a fixed window." },
@@ -98,7 +98,7 @@ export function SystemsTabs() {
             {active === "agents" && (
               <div className="fu">
                 <p className="mono" style={{ margin: 0, fontSize: 11.5, color: "var(--mute)" }}>Used in · LangGraph agentic trip planner</p>
-                <h3 style={{ fontFamily: sora, fontSize: 32, fontWeight: 700, letterSpacing: "-0.03em", margin: "10px 0 0" }}>Planner + specialist agents</h3>
+                <h3 style={{ fontFamily: sora, fontSize: 26, fontWeight: 700, letterSpacing: "-0.03em", margin: "10px 0 0" }}>Planner + specialist agents</h3>
                 <Flow items={["User", "Planner Agent"]} accentAt={[1]} />
                 <Notes notes={[
                   { k: "destination.research", v: "RAG over a travel corpus." },
@@ -111,7 +111,7 @@ export function SystemsTabs() {
             {active === "mcp" && (
               <div className="fu">
                 <p className="mono" style={{ margin: 0, fontSize: 11.5, color: "var(--mute)" }}>Used in · Settle — live in Claude and ChatGPT</p>
-                <h3 style={{ fontFamily: sora, fontSize: 32, fontWeight: 700, letterSpacing: "-0.03em", margin: "10px 0 0" }}>OAuth-scoped MCP server</h3>
+                <h3 style={{ fontFamily: sora, fontSize: 26, fontWeight: 700, letterSpacing: "-0.03em", margin: "10px 0 0" }}>OAuth-scoped MCP server</h3>
                 <Flow items={["AI Agent", "OAuth", "MCP Server"]} accentAt={[2]} />
                 <ul className="mono" style={{ listStyle: "none", margin: "28px 0 0", padding: 14, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))", gap: 8, border: "1px solid var(--border)", borderRadius: 12, background: "var(--surface)", fontSize: 12.5 }}>
                   {["list_groups()", "get_group_balances()", "add_expense()", "get_spending_analytics()"].map((f) => (

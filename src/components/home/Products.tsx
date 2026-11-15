@@ -43,7 +43,7 @@ export function Products() {
               <span className="mono" style={accentPill}>Featured · AI finance</span>
               <span className="mono" style={{ fontSize: 11.5, color: "var(--mute)" }}>001</span>
             </div>
-            <h3 style={{ fontFamily: sora, fontSize: "clamp(56px, 8vw, 88px)", fontWeight: 700, lineHeight: 0.92, letterSpacing: "-0.06em", margin: "26px 0 0" }}>FinX</h3>
+            <h3 style={{ fontFamily: sora, fontSize: "clamp(44px, 6vw, 64px)", fontWeight: 700, lineHeight: 0.92, letterSpacing: "-0.06em", margin: "26px 0 0" }}>FinX</h3>
             <p style={{ fontSize: 17, lineHeight: 1.65, color: "var(--dim)", maxWidth: 460, margin: "22px 0 28px" }}>
               One home for expenses, investments, budgets and trips. An LLM reads your Gmail and SMS and auto-categorises every transaction, then surfaces insights you'd otherwise miss.
             </p>
@@ -80,7 +80,7 @@ export function Products() {
               <span className="mono" style={accentPill}>MCP · live in Claude &amp; ChatGPT</span>
               <span className="mono" style={{ fontSize: 11.5, color: "var(--mute)" }}>002</span>
             </div>
-            <h3 style={{ fontFamily: sora, fontSize: 44, fontWeight: 700, letterSpacing: "-0.045em", lineHeight: 1, margin: "24px 0 0" }}>Settle</h3>
+            <h3 style={{ fontFamily: sora, fontSize: 32, fontWeight: 700, letterSpacing: "-0.04em", lineHeight: 1, margin: "24px 0 0" }}>Settle</h3>
             <p style={{ fontSize: 16, lineHeight: 1.65, color: "var(--dim)", margin: "14px 0 0", flex: 1 }}>
               Split shared expenses and settle up — plus an MCP server that hands 17 OAuth-scoped tools to any agent.
             </p>
@@ -92,7 +92,7 @@ export function Products() {
               <span className="mono" style={accentPill}>Full-stack travel journal</span>
               <span className="mono" style={{ fontSize: 11.5, color: "var(--mute)" }}>003</span>
             </div>
-            <h3 style={{ fontFamily: sora, fontSize: 44, fontWeight: 700, letterSpacing: "-0.045em", lineHeight: 1, margin: "24px 0 0" }}>mywayaround</h3>
+            <h3 style={{ fontFamily: sora, fontSize: 32, fontWeight: 700, letterSpacing: "-0.04em", lineHeight: 1, margin: "24px 0 0" }}>mywayaround</h3>
             <p style={{ fontSize: 16, lineHeight: 1.65, color: "var(--dim)", margin: "14px 0 0", flex: 1 }}>
               A full-stack travel journal on Supabase — auth, newsletter, a content Studio and a trip-matching quiz.
             </p>

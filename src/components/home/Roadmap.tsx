@@ -25,7 +25,7 @@ export function Roadmap() {
                   </span>
                   <span className="mono" style={{ fontSize: 11.5, color: "var(--mute)" }}>{b.eta}</span>
                 </div>
-                <p style={{ fontFamily: sora, fontSize: 60, fontWeight: 700, lineHeight: 1, letterSpacing: "-0.05em", margin: "34px 0 0", color: last ? undefined : "var(--surface2)", ...(last ? gradAccent : {}) }}>
+                <p style={{ fontFamily: sora, fontSize: 44, fontWeight: 700, lineHeight: 1, letterSpacing: "-0.05em", margin: "34px 0 0", color: last ? undefined : "var(--surface2)", ...(last ? gradAccent : {}) }}>
                   {String(i + 1).padStart(2, "0")}
                 </p>
                 <h3 style={{ fontFamily: sora, fontSize: 22, fontWeight: 600, letterSpacing: "-0.02em", margin: "14px 0 0" }}>{b.title}</h3>

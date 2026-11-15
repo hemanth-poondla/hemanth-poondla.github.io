@@ -35,7 +35,7 @@ export function Hero() {
             <span className="mono">GenAI Engineer · Senior Product Engineer @ Temenos</span>
           </div>
 
-          <h1 style={{ fontFamily: sora, fontSize: "clamp(44px, 7vw, 92px)", fontWeight: 700, lineHeight: 0.98, letterSpacing: "-0.05em", margin: "26px 0 0" }}>
+          <h1 style={{ fontFamily: sora, fontSize: "clamp(36px, 5.2vw, 64px)", fontWeight: 700, lineHeight: 0.98, letterSpacing: "-0.05em", margin: "26px 0 0" }}>
             From banking systems to <span style={gradAccent}>AI systems.</span>
           </h1>
 
@@ -56,7 +56,7 @@ export function Hero() {
             {stats.map((s) => (
               <div key={s.l} className="home-stat" style={{ padding: "14px 18px" }}>
                 <dt className="mono" style={{ fontSize: 11.5, color: "var(--mute)" }}>{s.l}</dt>
-                <dd style={{ margin: "6px 0 0", fontFamily: sora, fontSize: 30, fontWeight: 700, letterSpacing: "-0.03em", lineHeight: 1, ...gradTitle }}>{s.v}</dd>
+                <dd style={{ margin: "6px 0 0", fontFamily: sora, fontSize: 26, fontWeight: 700, letterSpacing: "-0.03em", lineHeight: 1, ...gradTitle }}>{s.v}</dd>
               </div>
             ))}
           </dl>

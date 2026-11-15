@@ -18,7 +18,7 @@ export function AboutStrip() {
 
         <div className="home-about" style={{ marginTop: 40 }}>
           <div>
-            <blockquote style={{ margin: 0, fontFamily: sora, fontSize: "clamp(28px, 3.8vw, 48px)", fontWeight: 600, lineHeight: 1.1, letterSpacing: "-0.035em" }}>
+            <blockquote style={{ margin: 0, fontFamily: sora, fontSize: "clamp(24px, 3vw, 36px)", fontWeight: 600, lineHeight: 1.1, letterSpacing: "-0.035em" }}>
               “In banking, a model that’s confidently wrong is a <span style={gradAccent}>bug that moves money.</span> I build AI the same way.”
             </blockquote>
             <p style={{ fontSize: 17, lineHeight: 1.7, color: "var(--mute)", maxWidth: 620, margin: "26px 0 0" }}>
@@ -34,7 +34,7 @@ export function AboutStrip() {
             <div className="home-facts">
               {facts.map((f) => (
                 <div key={f.t} style={{ ...card, padding: 20 }}>
-                  <p style={{ fontFamily: sora, fontSize: 40, fontWeight: 700, letterSpacing: "-0.05em", lineHeight: 1, margin: 0 }}>{f.v}</p>
+                  <p style={{ fontFamily: sora, fontSize: 32, fontWeight: 700, letterSpacing: "-0.05em", lineHeight: 1, margin: 0 }}>{f.v}</p>
                   <h3 style={{ fontFamily: sora, fontSize: 15, fontWeight: 600, margin: "12px 0 0" }}>{f.t}</h3>
                   <p style={{ fontSize: 13.5, color: "var(--mute)", margin: "4px 0 0" }}>{f.d}</p>
                 </div>

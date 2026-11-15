@@ -57,7 +57,7 @@ export function Travel() {
             <p className="mono" style={{ display: "flex", alignItems: "center", gap: 10, margin: 0, fontSize: 12, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--mute)" }}>
               <span style={{ width: 28, height: 1, background: "var(--accent)" }} />05 — Off duty
             </p>
-            <h2 style={{ fontFamily: sora, fontSize: "clamp(44px, 7vw, 88px)", fontWeight: 700, lineHeight: 0.96, letterSpacing: "-0.05em", margin: "14px 0 0" }}>
+            <h2 style={{ fontFamily: sora, fontSize: "clamp(32px, 4.4vw, 52px)", fontWeight: 700, lineHeight: 0.96, letterSpacing: "-0.05em", margin: "14px 0 0" }}>
               {places.length} places. <span style={gradAccent}>{countries.length} countries.</span>
             </h2>
             <p style={{ fontSize: 17, lineHeight: 1.65, color: "var(--mute)", maxWidth: 520, margin: "22px 0 0" }}>
