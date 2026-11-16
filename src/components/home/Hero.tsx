@@ -35,7 +35,7 @@ export function Hero() {
             <span className="mono">GenAI Engineer · Senior Product Engineer @ Temenos</span>
           </div>
 
-          <h1 style={{ fontFamily: sora, fontSize: "clamp(36px, 5.2vw, 64px)", fontWeight: 700, lineHeight: 0.98, letterSpacing: "-0.05em", margin: "26px 0 0" }}>
+          <h1 style={{ fontFamily: sora, fontSize: "clamp(34px, 4.6vw, 56px)", fontWeight: 700, lineHeight: 0.98, letterSpacing: "-0.05em", margin: "26px 0 0" }}>
             From banking systems to <span style={gradAccent}>AI systems.</span>
           </h1>
 
